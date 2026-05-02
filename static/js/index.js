@@ -89,6 +89,7 @@ function setupTeaserHover() {
             const video   = document.getElementById('video-' + key);
             const arrow   = document.getElementById('arrow-' + key);
             [overlay, video, arrow, item].filter(Boolean).forEach(el => el.classList.remove('active'));
+            if (item) item.setAttribute('aria-pressed', 'false');
         });
     }
 
@@ -101,14 +102,17 @@ function setupTeaserHover() {
 
         item.setAttribute('tabindex', '0');
         item.setAttribute('role', 'button');
+        item.setAttribute('aria-pressed', 'false');
 
         function activate() {
             clearActive(key);
             targets.forEach(el => el.classList.add('active'));
+            item.setAttribute('aria-pressed', 'true');
         }
 
         function deactivate() {
             targets.forEach(el => el.classList.remove('active'));
+            item.setAttribute('aria-pressed', 'false');
         }
 
         item.addEventListener('mouseenter', activate);
@@ -125,6 +129,15 @@ function setupTeaserHover() {
             activate();
         });
     });
+
+    const defaultTrigger = triggers.find(({ key, item }) => key === 'fail' && item);
+    if (defaultTrigger) {
+        const overlay = document.getElementById('overlay-' + defaultTrigger.key);
+        const video   = document.getElementById('video-' + defaultTrigger.key);
+        const arrow   = document.getElementById('arrow-' + defaultTrigger.key);
+        [overlay, video, arrow, defaultTrigger.item].filter(Boolean).forEach(el => el.classList.add('active'));
+        defaultTrigger.item.setAttribute('aria-pressed', 'true');
+    }
 
     document.addEventListener('click', function() {
         clearActive();
