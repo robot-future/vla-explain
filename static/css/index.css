@@ -377,7 +377,8 @@ main > section.section:nth-of-type(even) {
   background: transparent;
   border: 0;
   transition: transform 0.2s ease;
-  cursor: default;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .teaser-index-item::after {
@@ -391,7 +392,8 @@ main > section.section:nth-of-type(even) {
   z-index: 0;
 }
 
-.teaser-index-item:hover {
+.teaser-index-item:hover,
+.teaser-index-item.active {
   transform: scale(1.015);
 }
 
@@ -986,7 +988,8 @@ main > section.section:nth-of-type(even) {
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
-  cursor: default;
+  cursor: pointer;
+  touch-action: manipulation;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 

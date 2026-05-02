@@ -77,22 +77,57 @@ function setupAbstractToggle() {
 }
 
 function setupTeaserHover() {
-    [
+    const triggers = [
         { key: 'fail',    item: document.querySelector('.teaser-index-fail') },
         { key: 'success', item: document.querySelector('.teaser-index-success') }
-    ].forEach(function({ key, item }) {
+    ];
+
+    function clearActive(exceptKey) {
+        triggers.forEach(function({ key, item }) {
+            if (key === exceptKey) return;
+            const overlay = document.getElementById('overlay-' + key);
+            const video   = document.getElementById('video-' + key);
+            const arrow   = document.getElementById('arrow-' + key);
+            [overlay, video, arrow, item].filter(Boolean).forEach(el => el.classList.remove('active'));
+        });
+    }
+
+    triggers.forEach(function({ key, item }) {
         if (!item) return;
         const overlay = document.getElementById('overlay-' + key);
         const video   = document.getElementById('video-' + key);
         const arrow   = document.getElementById('arrow-' + key);
-        const targets = [overlay, video, arrow].filter(Boolean);
+        const targets = [overlay, video, arrow, item].filter(Boolean);
 
-        item.addEventListener('mouseenter', function() {
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('role', 'button');
+
+        function activate() {
+            clearActive(key);
             targets.forEach(el => el.classList.add('active'));
-        });
-        item.addEventListener('mouseleave', function() {
+        }
+
+        function deactivate() {
             targets.forEach(el => el.classList.remove('active'));
+        }
+
+        item.addEventListener('mouseenter', activate);
+        item.addEventListener('mouseleave', deactivate);
+        item.addEventListener('focus', activate);
+        item.addEventListener('blur', deactivate);
+        item.addEventListener('click', function(event) {
+            event.stopPropagation();
+            activate();
         });
+        item.addEventListener('keydown', function(event) {
+            if (event.key !== 'Enter' && event.key !== ' ') return;
+            event.preventDefault();
+            activate();
+        });
+    });
+
+    document.addEventListener('click', function() {
+        clearActive();
     });
 }
 
@@ -186,24 +221,49 @@ function setupMethodTriggers() {
 
     if (!overview || triggers.length === 0) return;
 
+    function clearActive(except) {
+        triggers.forEach(trigger => {
+            if (trigger === except) return;
+            trigger.classList.remove('is-active');
+        });
+        if (!except) {
+            overview.removeAttribute('data-active-method');
+        }
+    }
+
     triggers.forEach(trigger => {
         const key = trigger.getAttribute('data-method-trigger');
-        trigger.addEventListener('mouseenter', function() {
+        trigger.setAttribute('tabindex', '0');
+        trigger.setAttribute('role', 'button');
+
+        function activate() {
+            clearActive(trigger);
             overview.setAttribute('data-active-method', key);
             trigger.classList.add('is-active');
-        });
-        trigger.addEventListener('mouseleave', function() {
-            overview.removeAttribute('data-active-method');
+        }
+
+        function deactivate() {
             trigger.classList.remove('is-active');
-        });
-        trigger.addEventListener('focus', function() {
-            overview.setAttribute('data-active-method', key);
-            trigger.classList.add('is-active');
-        });
-        trigger.addEventListener('blur', function() {
             overview.removeAttribute('data-active-method');
-            trigger.classList.remove('is-active');
+        }
+
+        trigger.addEventListener('mouseenter', activate);
+        trigger.addEventListener('mouseleave', deactivate);
+        trigger.addEventListener('focus', activate);
+        trigger.addEventListener('blur', deactivate);
+        trigger.addEventListener('click', function(event) {
+            event.stopPropagation();
+            activate();
         });
+        trigger.addEventListener('keydown', function(event) {
+            if (event.key !== 'Enter' && event.key !== ' ') return;
+            event.preventDefault();
+            activate();
+        });
+    });
+
+    document.addEventListener('click', function() {
+        clearActive();
     });
 }
 
