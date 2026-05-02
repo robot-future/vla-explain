@@ -60,8 +60,6 @@
   <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ajax.googleapis.com">
-  <link rel="preconnect" href="https://documentcloud.adobe.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
 
@@ -76,15 +74,11 @@
   <link rel="stylesheet" href="static/css/index.css">
   
   <!-- Non-critical CSS - Load asynchronously -->
-  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   
   <!-- Fallback for browsers that don't support preload -->
   <noscript>
-    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
-    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
     <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   </noscript>
@@ -93,10 +87,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Defer non-critical JavaScript -->
-  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/bulma-carousel.min.js"></script>
-  <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
   
   <!-- Structured Data for Academic Papers -->
@@ -252,7 +243,7 @@
           <div class="trial-video-row">
             <div class="trial-video-wrapper trial-video-fail" id="video-fail">
               <div class="trial-video-label"><i class="fas fa-times-circle"></i> Failed</div>
-              <video autoplay muted loop playsinline>
+              <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                 <source src="assets/stack_cups_s2_fail.mp4" type="video/mp4">
               </video>
             </div>
@@ -260,7 +251,7 @@
           <div class="trial-video-row">
             <div class="trial-video-wrapper trial-video-success" id="video-success">
               <div class="trial-video-label"><i class="fas fa-check-circle"></i> Success</div>
-              <video autoplay muted loop playsinline>
+              <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                 <source src="assets/stack_cups_s4_succ_h264.mp4" type="video/mp4">
               </video>
             </div>
@@ -374,25 +365,25 @@
               <span class="motivation-task-title">Seen Task</span>
               <span class="motivation-task-name">close the red jar</span>
             </div>
-            <video class="motivation-overview-video" autoplay muted loop playsinline>
+            <video class="motivation-overview-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
               <source src="assets/close_jar_s0_succ_h264.mp4" type="video/mp4">
             </video>
             <div class="motivation-view-row">
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Front</span>
-                <video autoplay muted loop playsinline>
+                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                   <source src="assets/close_jar_s0_succ_front_h264.mp4" type="video/mp4">
                 </video>
               </div>
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Overhead</span>
-                <video autoplay muted loop playsinline>
+                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                   <source src="assets/close_jar_s0_succ_overhead_h264.mp4" type="video/mp4">
                 </video>
               </div>
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Wrist</span>
-                <video autoplay muted loop playsinline>
+                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                   <source src="assets/close_jar_s0_succ_wrist_h264.mp4" type="video/mp4">
                 </video>
               </div>
@@ -405,25 +396,25 @@
               <span class="motivation-task-title">Unseen Task</span>
               <span class="motivation-task-name">close microwave</span>
             </div>
-            <video class="motivation-overview-video" autoplay muted loop playsinline>
+            <video class="motivation-overview-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
               <source src="assets/close_microwave_s0_fail_h264.mp4" type="video/mp4">
             </video>
             <div class="motivation-view-row">
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Front</span>
-                <video autoplay muted loop playsinline>
+                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                   <source src="assets/close_microwave_s0_fail_front_h264.mp4" type="video/mp4">
                 </video>
               </div>
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Overhead</span>
-                <video autoplay muted loop playsinline>
+                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                   <source src="assets/close_microwave_s0_fail_overhead_h264.mp4" type="video/mp4">
                 </video>
               </div>
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Wrist</span>
-                <video autoplay muted loop playsinline>
+                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                   <source src="assets/close_microwave_s0_fail_wrist_h264.mp4" type="video/mp4">
                 </video>
               </div>
@@ -491,26 +482,26 @@
             <div class="demo-original-layout" data-demo-sync-group="original">
               <figure class="demo-overview-panel">
                 <span class="demo-view-label">Overview</span>
-                <video class="demo-sync-video demo-overview-video" autoplay muted loop playsinline>
+                <video class="demo-sync-video demo-overview-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                   <source src="assets/demo/overview.mp4" type="video/mp4">
                 </video>
               </figure>
               <div class="demo-view-stack">
                 <figure class="demo-video-panel">
                   <span class="demo-view-label">Front</span>
-                  <video class="demo-sync-video" autoplay muted loop playsinline>
+                  <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                     <source src="assets/demo/original/front_original.mp4" type="video/mp4">
                   </video>
                 </figure>
                 <figure class="demo-video-panel">
                   <span class="demo-view-label">Overhead</span>
-                  <video class="demo-sync-video" autoplay muted loop playsinline>
+                  <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                     <source src="assets/demo/original/overhead_original.mp4" type="video/mp4">
                   </video>
                 </figure>
                 <figure class="demo-video-panel">
                   <span class="demo-view-label">Wrist</span>
-                  <video class="demo-sync-video" autoplay muted loop playsinline>
+                  <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                     <source src="assets/demo/original/wrist_original.mp4" type="video/mp4">
                   </video>
                 </figure>
@@ -529,19 +520,19 @@
                 <div class="demo-heatmap-grid">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/attention_score/front_attention.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/attention_score/overhead_attention.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/attention_score/wrist_attention.mp4" type="video/mp4">
                     </video>
                   </figure>
@@ -553,19 +544,19 @@
                 <div class="demo-heatmap-grid">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/token_norm/front_norm.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/token_norm/overhead_norm.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/token_norm/wrist_norm.mp4" type="video/mp4">
                     </video>
                   </figure>
@@ -577,19 +568,19 @@
                 <div class="demo-heatmap-grid">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/iss/front_iss.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/iss/overhead_iss.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/iss/wrist_iss.mp4" type="video/mp4">
                     </video>
                   </figure>
@@ -638,19 +629,19 @@
                 <div class="demo-nmr-view-row">
                   <figure class="demo-video-panel demo-mask-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/mask/front_mask.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel demo-mask-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/mask/overhead_mask.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel demo-mask-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/mask/wrist_mask.mp4" type="video/mp4">
                     </video>
                   </figure>
@@ -662,19 +653,19 @@
                 <div class="demo-nmr-view-row">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/iss/front_iss.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/iss/overhead_iss.mp4" type="video/mp4">
                     </video>
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline>
+                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
                       <source src="assets/demo/compare/iss/wrist_iss.mp4" type="video/mp4">
                     </video>
                   </figure>

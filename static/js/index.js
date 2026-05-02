@@ -1,5 +1,3 @@
-window.HELP_IMPROVE_VIDEOJS = false;
-
 function showCopiedFeedback(button, copyText) {
     button.classList.add('copied');
     copyText.textContent = 'Cop';
@@ -49,32 +47,6 @@ window.addEventListener('scroll', function() {
         _scrollToTopBtn.classList.remove('visible');
     }
 });
-
-// Video carousel autoplay when in view
-function setupVideoCarouselAutoplay() {
-    const carouselVideos = document.querySelectorAll('.results-carousel video');
-
-    if (carouselVideos.length === 0) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target;
-            if (entry.isIntersecting) {
-                video.play().catch(e => {
-                    console.log('Autoplay prevented:', e);
-                });
-            } else {
-                video.pause();
-            }
-        });
-    }, {
-        threshold: 0.5
-    });
-
-    carouselVideos.forEach(video => {
-        observer.observe(video);
-    });
-}
 
 function setupAbstractToggle() {
     const toggle = document.querySelector('.abstract-toggle');
@@ -236,24 +208,6 @@ function setupMethodTriggers() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var options = {
-		slidesToScroll: 1,
-		slidesToShow: 1,
-		loop: true,
-		infinite: true,
-		autoplay: true,
-		autoplaySpeed: 5000,
-	}
-
-	if (window.bulmaCarousel) {
-        bulmaCarousel.attach('.carousel', options);
-    }
-
-    if (window.bulmaSlider) {
-        bulmaSlider.attach();
-    }
-
-    setupVideoCarouselAutoplay();
     setupMotivationVideoAutoplay();
     setupAbstractToggle();
     setupTeaserHover();
