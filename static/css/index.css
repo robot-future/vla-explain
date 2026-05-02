@@ -484,7 +484,8 @@ main > section.section:nth-of-type(even) {
   transition: border-color 0.2s ease, outline-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.trial-video-wrapper video {
+.trial-video-wrapper video,
+.trial-video-wrapper img {
   display: block;
   width: 100%;
   height: 100%;
@@ -502,7 +503,8 @@ main > section.section:nth-of-type(even) {
     aspect-ratio: auto;
   }
 
-  .trial-video-wrapper video {
+  .trial-video-wrapper video,
+  .trial-video-wrapper img {
     object-fit: cover;
   }
 }
