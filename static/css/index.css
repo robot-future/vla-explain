@@ -1738,12 +1738,97 @@ main > section.section:nth-of-type(even) {
 }
 
 .demo-mask-card {
-  background: var(--nature-red-bg);
-  border-color: var(--nature-red-light);
+  background: #F7F6F3;
+  border-color: var(--border-color);
 }
 
 .demo-mask-panel {
   background: #1B0906;
+}
+
+.demo-nmr-interpretation-card {
+  align-content: start;
+}
+
+.demo-nmr-interpretations {
+  display: grid;
+  gap: 0.62rem;
+  margin: 0.05rem 0 0;
+  padding-left: 1.25rem;
+  color: var(--text-secondary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.94rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.demo-nmr-interpretations li {
+  padding-left: 0.1rem;
+}
+
+.demo-nmr-interpretations li::marker {
+  color: var(--nature-red);
+  font-weight: 850;
+}
+
+@media screen and (min-width: 769px) {
+  .demo-nmr-interpretation-card h4 {
+    font-size: 1.08rem;
+  }
+
+  .demo-nmr-interpretations {
+    gap: 0.95rem;
+    margin-top: 0.25rem;
+    padding-left: 1.45rem;
+    font-size: 1.08rem;
+    line-height: 1.56;
+  }
+
+  .demo-mask-legend span:first-child {
+    flex-basis: 100%;
+  }
+}
+
+.demo-mask-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.85rem;
+  margin-top: 0.05rem;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.demo-mask-legend span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+}
+
+.demo-mask-swatch {
+  display: inline-block;
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.14);
+}
+
+.demo-mask-swatch-green {
+  background: #44D65A;
+}
+
+.demo-mask-swatch-blue {
+  background: #3588E8;
+}
+
+.demo-mask-swatch-red {
+  background: #E33B30;
 }
 
 .experiments-section {
@@ -1752,7 +1837,29 @@ main > section.section:nth-of-type(even) {
 }
 
 .experiments-content {
-  margin-top: 2rem;
+  margin-top: 1.25rem;
+}
+
+.experiments-subtitle {
+  max-width: 760px;
+  margin: -0.85rem auto 0;
+  color: var(--text-secondary);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.experiments-interaction-hint {
+  margin: 0 0 0.65rem;
+  color: var(--nature-teal-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .experiments-grid {
@@ -1763,8 +1870,8 @@ main > section.section:nth-of-type(even) {
 }
 
 .experiment-card {
-  min-height: 170px;
-  padding: 1.1rem;
+  min-height: 245px;
+  padding: 1rem;
   background: var(--background-card);
   border: 1px solid var(--border-color);
   border-top: 3px solid var(--nature-red);
@@ -1773,10 +1880,13 @@ main > section.section:nth-of-type(even) {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  cursor: pointer;
+  touch-action: manipulation;
   transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
-.experiment-card:hover {
+.experiment-card:hover,
+.experiment-card.is-active {
   border-color: var(--nature-red-light);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
@@ -1797,6 +1907,80 @@ main > section.section:nth-of-type(even) {
   font-size: 1.15rem;
   font-weight: 800;
   line-height: 1.25;
+}
+
+.experiment-stat {
+  display: block;
+  margin-top: 0.7rem;
+  color: var(--nature-red);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 1.03rem;
+  font-weight: 850;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.experiment-card p {
+  margin: 0.55rem 0 0;
+  color: var(--text-secondary);
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 0.96rem;
+  font-weight: 400;
+  line-height: 1.38;
+}
+
+.experiment-toggle-text {
+  margin-top: auto;
+  padding-top: 0.85rem;
+  color: var(--nature-teal-dark);
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.experiment-card.is-active .experiment-toggle-text {
+  color: var(--nature-red);
+}
+
+.experiment-result-panel {
+  width: 100%;
+  margin: 1rem 0 0;
+  padding: 0.75rem;
+  background: var(--background-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.experiments-grid .experiment-result-panel {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.experiment-result-panel[hidden] {
+  display: none;
+}
+
+@media screen and (min-width: 769px) {
+  .experiment-result-panel {
+    width: calc((100% - 3rem) / 2 + 1rem);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .experiments-grid .experiment-result-panel {
+    grid-column: 2 / span 2;
+    width: 100%;
+  }
+}
+
+.experiment-result-panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: calc(var(--border-radius) - 1px);
 }
 
 @keyframes abstractReveal {
@@ -2094,8 +2278,8 @@ code {
   }
 
   .method-placeholder-card h3 {
-    font-size: 0.9rem;
-    line-height: 1.15;
+    font-size: 1.08rem;
+    line-height: 1.2;
   }
 
   .method-placeholder-body {
@@ -2103,9 +2287,9 @@ code {
   }
 
   .method-placeholder-body p {
-    margin-top: 0.55rem;
-    font-size: 0.78rem;
-    line-height: 1.32;
+    margin-top: 0.6rem;
+    font-size: 0.94rem;
+    line-height: 1.38;
   }
 
   .demo-section {
@@ -2287,6 +2471,26 @@ code {
 
   .experiments-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .experiment-card h3 {
+    font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  .experiment-card {
+    min-height: 255px;
+    padding: 0.85rem;
+  }
+
+  .experiment-stat {
+    font-size: 0.96rem;
+    line-height: 1.22;
+  }
+
+  .experiment-card p {
+    font-size: 0.84rem;
+    line-height: 1.3;
   }
 
   .demo-nmr-summary {

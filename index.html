@@ -71,7 +71,7 @@
   
   <!-- Critical CSS - Load synchronously -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=20260503-121">
+  <link rel="stylesheet" href="static/css/index.css?v=20260504-1">
   
   <!-- Non-critical CSS - Load asynchronously -->
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -86,7 +86,7 @@
   
   <!-- Defer non-critical JavaScript -->
   <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/index.js?v=20260503-18"></script>
+  <script defer src="static/js/index.js?v=20260504-1"></script>
   
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
@@ -453,13 +453,13 @@
           <article class="method-placeholder-card" data-method-trigger="iss-stream">
             <h3>ISS Stream</h3>
             <div class="method-placeholder-body">
-              <p>Generating temporal heatmaps via linear interpolation.</p>
+              <p>Generating temporal heatmaps over entire episode via linear interpolation.</p>
             </div>
           </article>
           <article class="method-placeholder-card" data-method-trigger="nmr">
             <h3>NMR@k</h3>
             <div class="method-placeholder-body">
-              <p>Quantifying nuisance-region reliance in top-k heatmaps.</p>
+              <p>Evaluating the overlap between top k heatmaps and nuisance regions.</p>
             </div>
           </article>
         </div>
@@ -479,7 +479,7 @@
         <div class="demo-top-grid">
           <div class="demo-block demo-original-block">
             <div class="demo-block-header">
-              <span class="demo-kicker">Original rollout</span>
+              <span class="demo-kicker">Episode</span>
               <h3>Task overview and camera views</h3>
             </div>
             <div class="demo-original-layout" data-demo-sync-group="original">
@@ -506,8 +506,8 @@
 
           <div class="demo-block demo-attribution-block">
             <div class="demo-block-header">
-              <span class="demo-kicker">Attribution comparison</span>
-              <h3>Attention score, token norm, and ISS heatmaps</h3>
+              <span class="demo-kicker">Heatmap Comparison</span>
+              <h3>Attention score, token norm, and ISS (Ours)</h3>
             </div>
             <div class="demo-method-grid">
               <article class="demo-method-card" data-demo-sync-group="attention">
@@ -547,7 +547,7 @@
               </article>
 
               <article class="demo-method-card demo-method-card-iss" data-demo-sync-group="iss">
-                <h4>ISS</h4>
+                <h4>ISS (Ours)</h4>
                 <div class="demo-heatmap-grid">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
@@ -570,13 +570,13 @@
         <div class="demo-block demo-nmr-block">
           <div class="demo-block-header">
             <span class="demo-kicker">NMR@10</span>
-            <h3>Top-10% ISS overlap with nuisance mask</h3>
+            <h3>Top-10% ISS heatmap overlap with nuisance mask</h3>
           </div>
           <div class="demo-nmr-layout">
             <div class="demo-nmr-data">
               <div class="demo-chart-panel">
                 <div class="demo-chart-header">
-                  <span>NMR@10 over rollout steps</span>
+                  <span>NMR@10 over entire episode</span>
                 </div>
                 <div id="nmr-chart" class="demo-chart" data-src="assets/demo/nmr10_step.csv" aria-label="NMR@10 line chart"></div>
               </div>
@@ -617,24 +617,19 @@
                     <img class="demo-sync-video" src="assets/demo/mask/wrist_mask.gif" alt="wrist mask" loading="lazy">
                   </figure>
                 </div>
+                <div class="demo-mask-legend" aria-label="Mask color explanation">
+                  <span><i class="demo-mask-swatch demo-mask-swatch-green"></i>Green - robot arm and task-relevant objects</span>
+                  <span><i class="demo-mask-swatch demo-mask-swatch-blue"></i>Blue - table support</span>
+                  <span><i class="demo-mask-swatch demo-mask-swatch-red"></i>Red - task-irrelevant regions</span>
+                </div>
               </article>
 
-              <article class="demo-nmr-media-group demo-method-card-iss" data-demo-sync-group="nmr-iss">
-                <h4>ISS heatmap</h4>
-                <div class="demo-nmr-view-row">
-                  <figure class="demo-video-panel">
-                    <span class="demo-view-label">Front</span>
-                    <img class="demo-sync-video" src="assets/demo/compare/iss/front_iss.gif" alt="front iss" loading="lazy">
-                  </figure>
-                  <figure class="demo-video-panel">
-                    <span class="demo-view-label">Overhead</span>
-                    <img class="demo-sync-video" src="assets/demo/compare/iss/overhead_iss.gif" alt="overhead iss" loading="lazy">
-                  </figure>
-                  <figure class="demo-video-panel">
-                    <span class="demo-view-label">Wrist</span>
-                    <img class="demo-sync-video" src="assets/demo/compare/iss/wrist_iss.gif" alt="wrist iss" loading="lazy">
-                  </figure>
-                </div>
+              <article class="demo-nmr-media-group demo-method-card-iss demo-nmr-interpretation-card">
+                <h4>Result Interpretation</h4>
+                <ol class="demo-nmr-interpretations">
+                  <li>A lower NMR@10 (avg. 0.170) indicates that the VLA's generated actions rely less on task-irrelevant visual regions.</li>
+                  <li>ISS heatmaps faithfully explain the visual regions that the VLA depends on when generating actions at each time step.</li>
+                </ol>
               </article>
             </div>
           </div>
@@ -651,25 +646,41 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
         <h2 class="title is-3">Experiments</h2>
+        <p class="experiments-subtitle">Four key experiments; see the paper for more details.</p>
         <div class="experiments-content">
           <div class="experiments-grid" aria-label="Experiment subsections">
-            <article class="experiment-card">
+            <article class="experiment-card" data-experiment-trigger="correlation">
               <span class="experiment-index">01</span>
-              <h3>Correlation</h3>
+              <h3>Prediction</h3>
+              <strong class="experiment-stat">Pearson correlation: -0.77</strong>
+              <p>ISS is <strong>strongly negatively correlated</strong> with task success, making it predictive of OOD generalization.</p>
+              <span class="experiment-toggle-text">Open result ↓</span>
             </article>
-            <article class="experiment-card">
+            <article class="experiment-card" data-experiment-trigger="robustness">
               <span class="experiment-index">02</span>
               <h3>Robustness</h3>
+              <strong class="experiment-stat">Pareto optimal point: (0.002, 0.995)</strong>
+              <p>ISS provides a <strong>robust result</strong> under Gaussian noise perturbations.</p>
+              <span class="experiment-toggle-text">Open result ↓</span>
             </article>
-            <article class="experiment-card">
+            <article class="experiment-card" data-experiment-trigger="fidelity">
               <span class="experiment-index">03</span>
               <h3>Fidelity</h3>
+              <strong class="experiment-stat">Pearson correlations: 0.78 / 0.64 / 0.72</strong>
+              <p>Across <strong>three</strong> nuisance region perturbations, ISS faithfully reflects how perturbations affect actions.</p>
+              <span class="experiment-toggle-text">Open result ↓</span>
             </article>
-            <article class="experiment-card">
+            <article class="experiment-card" data-experiment-trigger="hyper-parameter">
               <span class="experiment-index">04</span>
-              <h3>Hyper-parameter</h3>
+              <h3>Hyperparameter</h3>
+              <strong class="experiment-stat">Best ISS setting: p = 0.3, N = 100</strong>
+              <p>Introducing interventions does not disrupt the VLA's ability to generate correct actions.</p>
+              <span class="experiment-toggle-text">Open result ↓</span>
             </article>
           </div>
+          <figure class="experiment-result-panel" id="experiment-result" aria-live="polite" hidden>
+            <img src="assets/exp/correlation.png" alt="Correlation experiment result" data-experiment-result>
+          </figure>
         </div>
       </div>
     </div>

@@ -286,6 +286,116 @@ function setupMethodTriggers() {
     });
 }
 
+function setupExperimentTriggers() {
+    const triggers = Array.from(document.querySelectorAll('[data-experiment-trigger]'));
+    const result = document.querySelector('[data-experiment-result]');
+    const panel = document.getElementById('experiment-result');
+    if (!triggers.length || !result || !panel) return;
+
+    const experiments = {
+        'correlation': {
+            src: 'assets/exp/correlation.png',
+            alt: 'Correlation experiment result'
+        },
+        'robustness': {
+            src: 'assets/exp/robustness.png',
+            alt: 'Robustness experiment result'
+        },
+        'fidelity': {
+            src: 'assets/exp/fidelity.png',
+            alt: 'Fidelity experiment result'
+        },
+        'hyper-parameter': {
+            src: 'assets/exp/hyper-parameter.png',
+            alt: 'Hyper-parameter experiment result'
+        }
+    };
+
+    function getGridColumnCount() {
+        const grid = triggers[0].parentElement;
+        if (!grid) return triggers.length;
+
+        const columns = window.getComputedStyle(grid).gridTemplateColumns;
+        const count = columns.split(' ').filter(Boolean).length;
+        return count || triggers.length;
+    }
+
+    function placePanelAfterRow(trigger) {
+        const triggerIndex = triggers.indexOf(trigger);
+        const columnCount = getGridColumnCount();
+        const rowEndIndex = Math.min(
+            Math.ceil((triggerIndex + 1) / columnCount) * columnCount - 1,
+            triggers.length - 1
+        );
+        triggers[rowEndIndex].insertAdjacentElement('afterend', panel);
+    }
+
+    function activate(trigger) {
+        const key = trigger.getAttribute('data-experiment-trigger');
+        const experiment = experiments[key];
+        if (!experiment) return;
+
+        triggers.forEach(item => {
+            const isCurrent = item === trigger;
+            item.classList.toggle('is-active', isCurrent);
+            item.setAttribute('aria-expanded', String(isCurrent));
+            const label = item.querySelector('.experiment-toggle-text');
+            if (label) {
+                label.textContent = isCurrent ? 'Hide result ↑' : 'Open result ↓';
+            }
+        });
+        placePanelAfterRow(trigger);
+        panel.hidden = false;
+        result.src = experiment.src;
+        result.alt = experiment.alt;
+    }
+
+    function clearActive() {
+        triggers.forEach(item => {
+            item.classList.remove('is-active');
+            item.setAttribute('aria-expanded', 'false');
+            const label = item.querySelector('.experiment-toggle-text');
+            if (label) {
+                label.textContent = 'Open result ↓';
+            }
+        });
+        panel.hidden = true;
+        result.removeAttribute('src');
+        result.alt = '';
+    }
+
+    triggers.forEach(trigger => {
+        trigger.setAttribute('tabindex', '0');
+        trigger.setAttribute('role', 'button');
+        trigger.setAttribute('aria-controls', 'experiment-result');
+        trigger.setAttribute('aria-expanded', 'false');
+
+        function toggle(event) {
+            event.stopPropagation();
+            const isActive = trigger.classList.contains('is-active');
+            if (isActive) {
+                clearActive();
+            } else {
+                activate(trigger);
+            }
+        }
+
+        trigger.addEventListener('click', toggle);
+        trigger.addEventListener('keydown', event => {
+            if (event.key !== 'Enter' && event.key !== ' ') return;
+            event.preventDefault();
+            toggle(event);
+        });
+    });
+
+    window.addEventListener('resize', () => {
+        const activeTrigger = triggers.find(item => item.classList.contains('is-active'));
+        if (activeTrigger && !panel.hidden) {
+            placePanelAfterRow(activeTrigger);
+        }
+    });
+}
+
 function setupTeaserLayoutScale() {
     const shell = document.querySelector('.teaser-layout-shell');
     const layout = document.querySelector('.teaser-layout');
@@ -366,42 +476,78 @@ document.addEventListener('DOMContentLoaded', function() {
     setupTeaserLayoutScale();
     setupFireworks();
     setupMethodTriggers();
+    setupExperimentTriggers();
     setupDemoVideoSync();
     setupNmrChart();
     setupDemoTopHeightBalance();
 });
 
 function setupMotivationVideoAutoplay() {
-    const videos = document.querySelectorAll('.motivation-task-col video');
-    if (videos.length === 0) return;
+    const taskColumns = Array.from(document.querySelectorAll('.motivation-task-col'));
+    if (taskColumns.length === 0) return;
+
+    const blankGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+
+    function preloadImages(images) {
+        images.forEach(image => {
+            const src = image.dataset.syncSrc;
+            if (!src) return;
+            const preload = new Image();
+            preload.src = src;
+        });
+    }
+
+    function restartGifGroup(column) {
+        const images = Array.from(column.querySelectorAll('img'));
+        if (images.length === 0) return;
+
+        images.forEach(image => {
+            if (!image.dataset.syncSrc) {
+                image.dataset.syncSrc = image.getAttribute('src') || '';
+            }
+        });
+
+        preloadImages(images);
+        images.forEach(image => {
+            image.src = blankGif;
+        });
+
+        requestAnimationFrame(() => {
+            images.forEach(image => {
+                image.src = image.dataset.syncSrc;
+            });
+        });
+    }
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            const video = entry.target;
-            if (entry.isIntersecting) {
-                video.play().catch(() => {});
-            } else {
-                video.pause();
-            }
+            if (!entry.isIntersecting) return;
+            restartGifGroup(entry.target);
         });
     }, { threshold: 0.25 });
 
-    videos.forEach(video => observer.observe(video));
+    taskColumns.forEach(column => {
+        Array.from(column.querySelectorAll('img')).forEach(image => {
+            image.dataset.syncSrc = image.getAttribute('src') || '';
+        });
+        observer.observe(column);
+    });
 }
 
 function setupDemoVideoSync() {
     const demo = document.getElementById('close-jar-demo');
     if (!demo) return;
 
+    const gifs = Array.from(demo.querySelectorAll('img.demo-sync-video'));
     const videos = Array.from(demo.querySelectorAll('video.demo-sync-video'));
-    if (videos.length < 2) return;
+    if (gifs.length + videos.length < 2) return;
 
+    const blankGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
     const overviewVideo = demo.querySelector('video.demo-overview-video');
-    if (!overviewVideo) return;
 
     let restarting = false;
 
-    function resetAll() {
+    function resetVideos() {
         videos.forEach(video => {
             video.loop = false;
             video.pause();
@@ -411,19 +557,48 @@ function setupDemoVideoSync() {
         });
     }
 
-    function playAll() {
+    function playVideos() {
         videos.forEach(video => video.play().catch(() => {}));
     }
 
-    function restartFromOverview() {
+    function resetGifs() {
+        gifs.forEach(image => {
+            if (!image.dataset.syncSrc) {
+                image.dataset.syncSrc = image.getAttribute('src') || '';
+            }
+        });
+
+        gifs.forEach(image => {
+            const preload = new Image();
+            preload.src = image.dataset.syncSrc;
+        });
+
+        gifs.forEach(image => {
+            image.src = blankGif;
+        });
+    }
+
+    function restoreGifs() {
+        gifs.forEach(image => {
+            image.src = image.dataset.syncSrc;
+        });
+    }
+
+    function restartAll() {
         if (restarting) return;
         restarting = true;
-        resetAll();
+        resetVideos();
+        resetGifs();
         requestAnimationFrame(function() {
-            playAll();
+            restoreGifs();
+            playVideos();
             restarting = false;
         });
     }
+
+    gifs.forEach(image => {
+        image.dataset.syncSrc = image.getAttribute('src') || '';
+    });
 
     videos.forEach(video => {
         video.loop = false;
@@ -434,26 +609,33 @@ function setupDemoVideoSync() {
         }
     });
 
-    overviewVideo.addEventListener('ended', restartFromOverview);
-    overviewVideo.addEventListener('pause', function() {
-        videos.forEach(video => {
-            if (video !== overviewVideo) video.pause();
+    if (overviewVideo) {
+        overviewVideo.addEventListener('ended', restartAll);
+        overviewVideo.addEventListener('pause', function() {
+            videos.forEach(video => {
+                if (video !== overviewVideo) video.pause();
+            });
         });
-    });
-    overviewVideo.addEventListener('play', function() {
-        videos.forEach(video => {
-            if (video !== overviewVideo && !video.ended) {
-                video.play().catch(() => {});
+        overviewVideo.addEventListener('play', function() {
+            videos.forEach(video => {
+                if (video !== overviewVideo && !video.ended) {
+                    video.play().catch(() => {});
+                }
+            });
+        });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                restartAll();
             }
         });
-    });
+    }, { threshold: 0.2 });
 
-    window.addEventListener('load', function() {
-        resetAll();
-        playAll();
-    });
-    resetAll();
-    playAll();
+    observer.observe(demo);
+    window.addEventListener('load', restartAll);
+    restartAll();
 }
 
 function setupNmrChart() {
@@ -593,10 +775,11 @@ function renderNmrChart(container, points) {
 
     const meanY = y(meanNmr).toFixed(2);
     const legendY = isCompact ? height - 34 : height - 14;
+    const legendStartX = isCompact ? margin.left : margin.left + 48;
     const legendItems = series.map((item, index) => {
         const legendX = isCompact
-            ? margin.left + (index % 3) * 98
-            : margin.left + index * 124;
+            ? legendStartX + (index % 3) * 98
+            : legendStartX + index * 124;
         const itemLegendY = isCompact
             ? legendY + Math.floor(index / 3) * 17
             : legendY;
@@ -605,12 +788,12 @@ function renderNmrChart(container, points) {
             <text x="${legendX + 32}" y="${itemLegendY + 4}">${item.label}</text>
         `;
     }).join('');
-    const meanLegendX = isCompact ? margin.left + 98 : margin.left + 496;
+    const meanLegendX = isCompact ? legendStartX + 98 : legendStartX + 496;
     const meanLegendY = isCompact ? legendY + 17 : legendY;
 
     container.innerHTML = `
         <svg class="${isCompact ? 'is-compact' : ''}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="nmr-chart-title">
-            <title id="nmr-chart-title">NMR@10 over rollout steps by view</title>
+            <title id="nmr-chart-title">NMR@10 over entire episode by view</title>
             ${yGrid}
             <line class="axis-line" x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${height - margin.bottom}"></line>
             <line class="axis-line" x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}"></line>
