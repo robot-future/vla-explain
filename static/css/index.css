@@ -175,10 +175,36 @@ a:hover {
 
 .publication-links .button {
     margin-bottom: 0 !important;
+    font-size: 1rem !important;
+    min-width: 5.5rem;
+    min-height: 2.15rem;
+    padding: 0.35rem 0.85rem !important;
 }
 
 .publication-links-column {
     padding-bottom: 0.25rem !important;
+}
+
+.publication-logo-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: -0.25rem auto 1.25rem;
+}
+
+.publication-affiliation-logo {
+  display: block;
+  width: auto;
+  max-width: min(42vw, 260px);
+  height: 56px;
+  object-fit: contain;
+}
+
+.publication-affiliation-logo-uol {
+  height: 62px;
+  max-width: min(46vw, 300px);
 }
 
 .dnerf {
@@ -237,9 +263,10 @@ main > section.section:nth-of-type(even) {
 /* Publication Content Styling */
 .publication-title {
     font-family: 'Times New Roman', Times, serif !important;
+    font-size: 2rem !important;
     font-weight: 800 !important;
     color: var(--text-primary) !important;
-    margin-bottom: 2rem !important;
+    margin-bottom: 1.25rem !important;
     line-height: 1.1 !important;
 }
 
@@ -253,7 +280,7 @@ main > section.section:nth-of-type(even) {
   padding: 0.5rem 1.4rem;
   background: var(--badge-bg);
   color: var(--badge-text) !important;
-  font-size: 18px;
+  font-size: 0.875rem;
   font-weight: 600;
   border-radius: 2rem;
   border: 1.5px solid var(--badge-border);
@@ -574,6 +601,10 @@ main > section.section:nth-of-type(even) {
   min-height: 4.15rem;
 }
 
+.teaser-layout-shell.is-stacked .teaser-index-label {
+  font-size: 22px;
+}
+
 .trial-video-row {
   display: flex;
   align-items: center;
@@ -685,6 +716,14 @@ main > section.section:nth-of-type(even) {
     font-weight: 500;
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
+}
+
+.publication-author-list {
+  font-size: 1rem !important;
+}
+
+.publication-affiliations {
+  font-size: 0.875rem !important;
 }
 
 .publication-authors a {
@@ -1042,14 +1081,14 @@ main > section.section:nth-of-type(even) {
 .method-highlight-iss-stream {
   right: 1rem;
   bottom: 1rem;
-  width: calc(45% - 1rem);
+  width: calc(45.5% - 1rem);
   height: calc(40% - 1rem);
 }
 
 .method-highlight-nmr {
   right: 1rem;
   top: 1rem;
-  width: calc(45% - 1rem);
+  width: calc(45.5% - 1rem);
   height: calc(60% - 1rem);
 }
 
@@ -1842,6 +1881,44 @@ code {
 @media screen and (min-width: 769px) and (max-width: 1024px) {
   .hero-body {
     padding: 3rem 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .paper-hero .publication-title {
+    font-size: 1.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .paper-hero .publication-author-list,
+  .paper-hero .publication-links .button {
+    font-size: 0.95rem !important;
+  }
+
+  .paper-hero .publication-links .button {
+    min-height: 2.05rem;
+    padding: 0.3rem 0.75rem !important;
+  }
+
+  .paper-hero .publication-affiliations,
+  .paper-hero .venue-badge {
+    font-size: 0.8125rem !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .paper-hero .publication-title {
+    font-size: 1.5rem !important;
+  }
+
+  .paper-hero .publication-author-list,
+  .paper-hero .publication-links .button {
+    font-size: 0.875rem !important;
+  }
+
+  .paper-hero .publication-links .button {
+    width: auto;
+    min-width: 5rem;
   }
 }
 
