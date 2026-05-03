@@ -87,8 +87,7 @@ function setupTeaserHover() {
             if (key === exceptKey) return;
             const overlay = document.getElementById('overlay-' + key);
             const video   = document.getElementById('video-' + key);
-            const arrow   = document.getElementById('arrow-' + key);
-            [overlay, video, arrow, item].filter(Boolean).forEach(el => el.classList.remove('active'));
+            [overlay, video, item].filter(Boolean).forEach(el => el.classList.remove('active'));
             if (item) item.setAttribute('aria-pressed', 'false');
         });
     }
@@ -97,8 +96,7 @@ function setupTeaserHover() {
         if (!item) return;
         const overlay = document.getElementById('overlay-' + key);
         const video   = document.getElementById('video-' + key);
-        const arrow   = document.getElementById('arrow-' + key);
-        const targets = [overlay, video, arrow, item].filter(Boolean);
+        const targets = [overlay, video, item].filter(Boolean);
 
         item.setAttribute('tabindex', '0');
         item.setAttribute('role', 'button');
@@ -134,8 +132,7 @@ function setupTeaserHover() {
     if (defaultTrigger) {
         const overlay = document.getElementById('overlay-' + defaultTrigger.key);
         const video   = document.getElementById('video-' + defaultTrigger.key);
-        const arrow   = document.getElementById('arrow-' + defaultTrigger.key);
-        [overlay, video, arrow, defaultTrigger.item].filter(Boolean).forEach(el => el.classList.add('active'));
+        [overlay, video, defaultTrigger.item].filter(Boolean).forEach(el => el.classList.add('active'));
         defaultTrigger.item.setAttribute('aria-pressed', 'true');
     }
 
@@ -280,10 +277,57 @@ function setupMethodTriggers() {
     });
 }
 
+function setupTeaserLayoutScale() {
+    const shell = document.querySelector('.teaser-layout-shell');
+    const layout = document.querySelector('.teaser-layout');
+
+    if (!shell || !layout) return;
+
+    function updateScale() {
+        layout.style.transform = 'none';
+        shell.style.width = '';
+        shell.style.height = '';
+        shell.classList.remove('is-stacked');
+
+        const parent = shell.parentElement;
+        const parentRect = parent ? parent.getBoundingClientRect() : null;
+        const viewportWidth = document.documentElement.clientWidth;
+        const scrollbarWidth = Math.max(0, window.innerWidth - viewportWidth);
+        const safeInset = scrollbarWidth + 12;
+        const availableWidth = Math.max(0, Math.min(
+            parentRect ? parentRect.width : viewportWidth,
+            viewportWidth
+        ) - safeInset);
+
+        const wideWidth = layout.offsetWidth;
+        if (!wideWidth || !availableWidth) return;
+
+        if (availableWidth < wideWidth * 0.82) {
+            shell.classList.add('is-stacked');
+        }
+
+        const baseWidth = layout.offsetWidth;
+        if (!baseWidth) return;
+        const scale = Math.min(1, availableWidth / baseWidth);
+
+        shell.style.width = `${baseWidth * scale}px`;
+        layout.style.transform = `scale(${scale})`;
+        shell.style.height = `${layout.offsetHeight * scale}px`;
+    }
+
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    window.addEventListener('load', updateScale);
+    if ('ResizeObserver' in window) {
+        new ResizeObserver(updateScale).observe(shell);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     setupMotivationVideoAutoplay();
     setupAbstractToggle();
     setupTeaserHover();
+    setupTeaserLayoutScale();
     setupFireworks();
     setupMethodTriggers();
     setupDemoVideoSync();
@@ -313,10 +357,10 @@ function setupDemoVideoSync() {
     const demo = document.getElementById('close-jar-demo');
     if (!demo) return;
 
-    const videos = Array.from(demo.querySelectorAll('.demo-sync-video'));
+    const videos = Array.from(demo.querySelectorAll('video.demo-sync-video'));
     if (videos.length < 2) return;
 
-    const overviewVideo = demo.querySelector('.demo-overview-video');
+    const overviewVideo = demo.querySelector('video.demo-overview-video');
     if (!overviewVideo) return;
 
     let restarting = false;

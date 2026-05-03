@@ -160,7 +160,7 @@
 
 
   <main id="main-content">
-  <section class="hero">
+  <section class="hero paper-hero">
     <div class="hero-body">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
@@ -187,7 +187,7 @@
               <span class="venue-badge">Accepted at International Conference on Machine Learning (ICML) 2026</span>
             </div>
 
-                  <div class="column has-text-centered">
+                  <div class="column has-text-centered publication-links-column">
                     <div class="publication-links">
                       <!-- Paper button (update with actual PDF URL when available) -->
                       <span class="link-block">
@@ -236,44 +236,43 @@
 <section class="hero teaser">
   <div class="container is-max-desktop teaser-container">
     <div class="hero-body">
-      <p class="teaser-lead"><strong>VLA generalization</strong> can be predicted through <strong>action attribution</strong>.</p>
+      <p class="teaser-lead">VLA generalization can be predicted through action attribution.</p>
       <p class="teaser-instance">For instance, in the task <em>"stack the other cups on the top of the red cup"</em>.</p>
-      <div class="teaser-layout">
-        <div class="trial-videos" aria-label="Trial video examples">
-          <div class="trial-video-row">
-            <div class="trial-video-wrapper trial-video-fail" id="video-fail">
-              <div class="trial-video-label"><i class="fas fa-times-circle"></i> Failed</div>
-              <img src="assets/stack_cups_s2_fail.gif" alt="Failed stack cups trial" class="trial-video-media">
+      <div class="teaser-layout-shell">
+        <div class="teaser-layout">
+          <div class="trial-videos" aria-label="Trial video examples">
+            <div class="trial-video-row">
+              <div class="trial-video-wrapper trial-video-fail" id="video-fail">
+                <div class="trial-video-label"><i class="fas fa-times-circle"></i> Failed</div>
+                <img src="assets/stack_cups_s2_fail.gif" alt="Failed stack cups trial" class="trial-video-media">
+              </div>
+            </div>
+            <div class="trial-video-row">
+              <div class="trial-video-wrapper trial-video-success" id="video-success">
+                <div class="trial-video-label"><i class="fas fa-check-circle"></i> Success</div>
+                <img src="assets/stack_cups_s4_succ.gif" alt="Successful stack cups trial" class="trial-video-media">
+              </div>
             </div>
           </div>
-          <div class="trial-video-row">
-            <div class="trial-video-wrapper trial-video-success" id="video-success">
-              <div class="trial-video-label"><i class="fas fa-check-circle"></i> Success</div>
-              <img src="assets/stack_cups_s4_succ.gif" alt="Successful stack cups trial" class="trial-video-media">
+          <div class="teaser-figure-column">
+            <div class="teaser-image-wrapper">
+              <img src="assets/teaser.png" alt="Teaser figure" class="teaser-image">
+              <div class="teaser-overlay teaser-overlay-fail" id="overlay-fail"></div>
+              <div class="teaser-overlay teaser-overlay-success" id="overlay-success"></div>
             </div>
           </div>
-        </div>
-        <div class="trial-arrows" aria-hidden="true">
-          <span class="trial-video-arrow trial-video-arrow-fail" id="arrow-fail"></span>
-          <span class="trial-video-arrow trial-video-arrow-success" id="arrow-success"></span>
-        </div>
-        <div class="teaser-figure-column">
-          <div class="teaser-image-wrapper">
-            <img src="assets/teaser.png" alt="Teaser figure" class="teaser-image">
-            <div class="teaser-overlay teaser-overlay-fail" id="overlay-fail"></div>
-            <div class="teaser-overlay teaser-overlay-success" id="overlay-success"></div>
-          </div>
-        </div>
-        <div class="teaser-caption">
-          <div class="teaser-index">
-            <p class="teaser-index-hint">Hover or tap a trial type</p>
-            <div class="teaser-index-item teaser-index-fail">
-              <span class="teaser-index-label">Failed Trials</span>
-              <span>Action decisions rely on <strong>nuisance visual cues</strong> (e.g., background, texture, and shadows)</span>
-            </div>
-            <div class="teaser-index-item teaser-index-success">
-              <span class="teaser-index-label">Successful Trials</span>
-              <span>Action decisions rely on <strong>task-relevant cues</strong> (e.g., manipulator, end-effector, and cups)</span>
+          <div class="teaser-caption">
+            <div class="teaser-index">
+              <div class="teaser-index-item teaser-index-fail">
+                <span class="teaser-index-hint">Hover or tap failed trials</span>
+                <span class="teaser-index-label">Failed Trials</span>
+                <span>Action decisions rely on <strong>nuisance visual cues</strong> (e.g., background, texture, and shadows)</span>
+              </div>
+              <div class="teaser-index-item teaser-index-success">
+                <span class="teaser-index-hint">Hover or tap successful trials</span>
+                <span class="teaser-index-label">Successful Trials</span>
+                <span>Action decisions rely on <strong>task-relevant cues</strong> (e.g., manipulator, end-effector, and cups)</span>
+              </div>
             </div>
           </div>
         </div>
@@ -362,27 +361,19 @@
               <span class="motivation-task-title">Seen Task</span>
               <span class="motivation-task-name">close the red jar</span>
             </div>
-            <video class="motivation-overview-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-              <source src="assets/close_jar_s0_succ_h264.mp4" type="video/mp4">
-            </video>
+            <img class="motivation-overview-video" src="assets/close_jar_s0_succ_h264.gif" alt="close jar s0 succ h264" loading="lazy">
             <div class="motivation-view-row">
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Front</span>
-                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                  <source src="assets/close_jar_s0_succ_front_h264.mp4" type="video/mp4">
-                </video>
+                <img src="assets/close_jar_s0_succ_front_h264.gif" alt="close jar s0 succ front h264" loading="lazy">
               </div>
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Overhead</span>
-                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                  <source src="assets/close_jar_s0_succ_overhead_h264.mp4" type="video/mp4">
-                </video>
+                <img src="assets/close_jar_s0_succ_overhead_h264.gif" alt="close jar s0 succ overhead h264" loading="lazy">
               </div>
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Wrist</span>
-                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                  <source src="assets/close_jar_s0_succ_wrist_h264.mp4" type="video/mp4">
-                </video>
+                <img src="assets/close_jar_s0_succ_wrist_h264.gif" alt="close jar s0 succ wrist h264" loading="lazy">
               </div>
             </div>
           </div>
@@ -393,27 +384,19 @@
               <span class="motivation-task-title">Unseen Task</span>
               <span class="motivation-task-name">close microwave</span>
             </div>
-            <video class="motivation-overview-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-              <source src="assets/close_microwave_s0_fail_h264.mp4" type="video/mp4">
-            </video>
+            <img class="motivation-overview-video" src="assets/close_microwave_s0_fail_h264.gif" alt="close microwave s0 fail h264" loading="lazy">
             <div class="motivation-view-row">
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Front</span>
-                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                  <source src="assets/close_microwave_s0_fail_front_h264.mp4" type="video/mp4">
-                </video>
+                <img src="assets/close_microwave_s0_fail_front_h264.gif" alt="close microwave s0 fail front h264" loading="lazy">
               </div>
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Overhead</span>
-                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                  <source src="assets/close_microwave_s0_fail_overhead_h264.mp4" type="video/mp4">
-                </video>
+                <img src="assets/close_microwave_s0_fail_overhead_h264.gif" alt="close microwave s0 fail overhead h264" loading="lazy">
               </div>
               <div class="motivation-view-item">
                 <span class="motivation-view-label">Wrist</span>
-                <video autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                  <source src="assets/close_microwave_s0_fail_wrist_h264.mp4" type="video/mp4">
-                </video>
+                <img src="assets/close_microwave_s0_fail_wrist_h264.gif" alt="close microwave s0 fail wrist h264" loading="lazy">
               </div>
             </div>
           </div>
@@ -479,28 +462,20 @@
             <div class="demo-original-layout" data-demo-sync-group="original">
               <figure class="demo-overview-panel">
                 <span class="demo-view-label">Overview</span>
-                <video class="demo-sync-video demo-overview-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                  <source src="assets/demo/overview.mp4" type="video/mp4">
-                </video>
+                <img class="demo-sync-video demo-overview-video" src="assets/demo/overview.gif" alt="overview" loading="lazy">
               </figure>
               <div class="demo-view-stack">
                 <figure class="demo-video-panel">
                   <span class="demo-view-label">Front</span>
-                  <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                    <source src="assets/demo/original/front_original.mp4" type="video/mp4">
-                  </video>
+                  <img class="demo-sync-video" src="assets/demo/original/front_original.gif" alt="front original" loading="lazy">
                 </figure>
                 <figure class="demo-video-panel">
                   <span class="demo-view-label">Overhead</span>
-                  <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                    <source src="assets/demo/original/overhead_original.mp4" type="video/mp4">
-                  </video>
+                  <img class="demo-sync-video" src="assets/demo/original/overhead_original.gif" alt="overhead original" loading="lazy">
                 </figure>
                 <figure class="demo-video-panel">
                   <span class="demo-view-label">Wrist</span>
-                  <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                    <source src="assets/demo/original/wrist_original.mp4" type="video/mp4">
-                  </video>
+                  <img class="demo-sync-video" src="assets/demo/original/wrist_original.gif" alt="wrist original" loading="lazy">
                 </figure>
               </div>
             </div>
@@ -517,21 +492,15 @@
                 <div class="demo-heatmap-grid">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/attention_score/front_attention.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/attention_score/front_attention.gif" alt="front attention" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/attention_score/overhead_attention.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/attention_score/overhead_attention.gif" alt="overhead attention" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/attention_score/wrist_attention.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/attention_score/wrist_attention.gif" alt="wrist attention" loading="lazy">
                   </figure>
                 </div>
               </article>
@@ -541,21 +510,15 @@
                 <div class="demo-heatmap-grid">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/token_norm/front_norm.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/token_norm/front_norm.gif" alt="front norm" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/token_norm/overhead_norm.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/token_norm/overhead_norm.gif" alt="overhead norm" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/token_norm/wrist_norm.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/token_norm/wrist_norm.gif" alt="wrist norm" loading="lazy">
                   </figure>
                 </div>
               </article>
@@ -565,21 +528,15 @@
                 <div class="demo-heatmap-grid">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/iss/front_iss.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/iss/front_iss.gif" alt="front iss" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/iss/overhead_iss.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/iss/overhead_iss.gif" alt="overhead iss" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/iss/wrist_iss.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/iss/wrist_iss.gif" alt="wrist iss" loading="lazy">
                   </figure>
                 </div>
               </article>
@@ -626,21 +583,15 @@
                 <div class="demo-nmr-view-row">
                   <figure class="demo-video-panel demo-mask-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/mask/front_mask.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/mask/front_mask.gif" alt="front mask" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel demo-mask-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/mask/overhead_mask.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/mask/overhead_mask.gif" alt="overhead mask" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel demo-mask-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/mask/wrist_mask.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/mask/wrist_mask.gif" alt="wrist mask" loading="lazy">
                   </figure>
                 </div>
               </article>
@@ -650,21 +601,15 @@
                 <div class="demo-nmr-view-row">
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Front</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/iss/front_iss.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/iss/front_iss.gif" alt="front iss" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Overhead</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/iss/overhead_iss.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/iss/overhead_iss.gif" alt="overhead iss" loading="lazy">
                   </figure>
                   <figure class="demo-video-panel">
                     <span class="demo-view-label">Wrist</span>
-                    <video class="demo-sync-video" autoplay muted loop playsinline x5-playsinline webkit-playsinline>
-                      <source src="assets/demo/compare/iss/wrist_iss.mp4" type="video/mp4">
-                    </video>
+                    <img class="demo-sync-video" src="assets/demo/compare/iss/wrist_iss.gif" alt="wrist iss" loading="lazy">
                   </figure>
                 </div>
               </article>
