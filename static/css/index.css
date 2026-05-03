@@ -194,11 +194,45 @@ a:hover {
 
 .publication-logo-strip {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin: -0.25rem auto 1.25rem;
+  max-width: 100%;
+}
+
+.publication-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: transform 0.18s ease, opacity 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.publication-logo-link:hover,
+.publication-logo-link:focus {
+  opacity: 0.9;
+  border-color: rgba(26, 111, 168, 0.28);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.publication-logo-link::after {
+  content: 'View website ↗';
+  display: block;
+  margin-top: 0.28rem;
+  color: var(--nature-teal-dark);
+  font-size: 0.68rem;
+  font-weight: 800;
+  line-height: 1;
+  opacity: 1;
+  white-space: nowrap;
 }
 
 .publication-affiliation-logo {
@@ -217,6 +251,30 @@ a:hover {
 @media screen and (min-width: 769px) {
   .publication-logo-strip {
     gap: 10rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .publication-logo-strip {
+    gap: clamp(0.75rem, 4vw, 1.5rem);
+  }
+
+  .publication-affiliation-logo {
+    max-width: 42vw;
+    height: clamp(42px, 12vw, 54px);
+  }
+
+  .publication-affiliation-logo-uol {
+    max-width: 44vw;
+    height: clamp(46px, 13vw, 58px);
+  }
+
+  .publication-logo-link {
+    padding: 0.15rem 0.2rem;
+  }
+
+  .publication-logo-link::after {
+    font-size: clamp(0.58rem, 2.4vw, 0.68rem);
   }
 }
 
@@ -898,6 +956,32 @@ main > section.section:nth-of-type(even) {
 .author-block {
   display: inline-block;
   margin-right: 0.5rem;
+}
+
+.author-separator {
+  display: inline;
+}
+
+.publication-affiliation-lines {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.1rem 1rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.publication-affiliation-line {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.publication-affiliation-line + .publication-affiliation-line::before {
+  content: none;
+}
+
+.publication-affiliation-line:nth-child(3) {
+  flex-basis: 100%;
 }
 
 .publication-body img {
@@ -2545,6 +2629,23 @@ code {
     font-size: 0.95rem !important;
   }
 
+  .paper-hero .publication-author-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.42rem 0.38rem;
+    max-width: 36rem;
+    font-size: clamp(0.78rem, 2.7vw, 0.98rem) !important;
+    margin: 0 auto 1.2rem;
+  }
+
+  .paper-hero .publication-author-list .author-block {
+    display: block;
+    margin-right: 0;
+    min-width: 0;
+    text-align: center;
+    white-space: nowrap;
+  }
+
   .paper-hero .publication-links .button {
     min-height: 2.05rem;
     padding: 0.3rem 0.75rem !important;
@@ -2553,6 +2654,21 @@ code {
   .paper-hero .publication-affiliations,
   .paper-hero .venue-badge {
     font-size: 0.8125rem !important;
+  }
+
+  .paper-hero .publication-affiliation-lines {
+    display: grid;
+    gap: 0.18rem;
+    margin-right: 0;
+  }
+
+  .paper-hero .publication-affiliation-line {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .paper-hero .publication-affiliation-line + .publication-affiliation-line::before {
+    content: none;
   }
 
   .paper-hero .venue-badge {
@@ -2593,8 +2709,23 @@ code {
     font-size: 0.875rem !important;
   }
 
+  .paper-hero .publication-author-list {
+    gap: 0.36rem 0.18rem;
+    max-width: calc(100vw - 2.25rem);
+    font-size: clamp(0.68rem, 2.85vw, 0.84rem) !important;
+  }
+
   .paper-hero .venue-badge {
     padding: 0.42rem 0.4rem;
+  }
+
+  .paper-hero .publication-affiliations {
+    font-size: clamp(0.62rem, 2.65vw, 0.78rem) !important;
+    max-width: calc(100vw - 2.5rem);
+    margin-left: auto;
+    margin-right: auto;
+    transform: translateX(0);
+    padding-right: 0.35rem;
   }
 
   .paper-hero .publication-links .button {
