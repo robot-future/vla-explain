@@ -297,7 +297,10 @@ function setupTeaserLayoutScale() {
         shell.style.width = '';
         shell.style.height = '';
         shell.style.removeProperty('--teaser-layout-scale');
-        shell.style.removeProperty('--teaser-inverse-scale');
+        shell.style.removeProperty('--teaser-detail-font-size');
+        shell.style.removeProperty('--teaser-detail-height');
+        shell.style.removeProperty('--teaser-detail-width');
+        shell.style.removeProperty('--teaser-detail-obstruction');
         shell.classList.remove('is-stacked');
 
         const parent = shell.parentElement;
@@ -313,7 +316,8 @@ function setupTeaserLayoutScale() {
         const wideWidth = layout.offsetWidth;
         if (!wideWidth || !availableWidth) return;
 
-        if (availableWidth < wideWidth * 0.82) {
+        const isStacked = availableWidth < wideWidth * 0.82;
+        if (isStacked) {
             shell.classList.add('is-stacked');
         }
 
@@ -323,15 +327,33 @@ function setupTeaserLayoutScale() {
 
         shell.style.width = `${baseWidth * scale}px`;
         layout.style.transform = `scale(${scale})`;
-        shell.style.height = `${layout.offsetHeight * scale}px`;
         shell.style.setProperty('--teaser-layout-scale', String(scale));
-        shell.style.setProperty('--teaser-inverse-scale', String(1 / scale));
+        if (isStacked) {
+            const targetFontPt = 12;
+            const targetHeightPx = viewportWidth <= 480 ? 64 : 60;
+            const targetWidthPx = viewportWidth <= 480 ? Math.max(0, viewportWidth - 16) : null;
+            shell.style.setProperty('--teaser-detail-font-size', `${targetFontPt / scale}pt`);
+            shell.style.setProperty('--teaser-detail-height', `${targetHeightPx / scale}px`);
+            if (targetWidthPx) {
+                shell.style.setProperty('--teaser-detail-width', `${targetWidthPx / scale}px`);
+            }
+        }
+        const detail = shell.querySelector('.teaser-trial-detail');
+        const indexItems = shell.querySelectorAll('.teaser-index-item');
+        if (isStacked && detail && indexItems.length) {
+            const detailRect = detail.getBoundingClientRect();
+            const buttonBottom = Array.from(indexItems).reduce((bottom, item) => {
+                return Math.max(bottom, item.getBoundingClientRect().bottom);
+            }, 0);
+            const obstruction = Math.max(0, (buttonBottom - detailRect.top) / scale);
+            shell.style.setProperty('--teaser-detail-obstruction', `${obstruction}px`);
+        }
+        shell.style.height = `${layout.offsetHeight * scale}px`;
     }
 
     window._updateTeaserLayoutScale = updateScale;
     updateScale();
     window.addEventListener('resize', updateScale);
-    window.addEventListener('load', updateScale);
     if ('ResizeObserver' in window) {
         new ResizeObserver(updateScale).observe(shell);
     }
@@ -465,7 +487,16 @@ function setupNmrChart() {
                 ));
 
             if (points.length === 0) throw new Error('No valid NMR rows found');
-            renderNmrChart(chart, points);
+            let renderFrame = null;
+            function scheduleRender() {
+                if (renderFrame) cancelAnimationFrame(renderFrame);
+                renderFrame = requestAnimationFrame(function() {
+                    renderFrame = null;
+                    renderNmrChart(chart, points);
+                });
+            }
+            scheduleRender();
+            window.addEventListener('resize', scheduleRender);
 
             const latestRow = rows[rows.length - 1];
             updateNmrValue('nmr-front-value', latestRow.nmr_front);
@@ -502,9 +533,12 @@ function parseCsv(text) {
 }
 
 function renderNmrChart(container, points) {
-    const width = 860;
-    const height = 360;
-    const margin = { top: 24, right: 142, bottom: 44, left: 58 };
+    const isCompact = (container.getBoundingClientRect().width || window.innerWidth) < 520;
+    const width = isCompact ? 360 : 860;
+    const height = isCompact ? 300 : 360;
+    const margin = isCompact
+        ? { top: 18, right: 14, bottom: 80, left: 54 }
+        : { top: 20, right: 28, bottom: 66, left: 58 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
     const series = [
@@ -532,7 +566,10 @@ function renderNmrChart(container, points) {
     }
 
     const yTicks = [0, 0.2, 0.4, 0.6, 0.8, 1].filter(tick => tick <= maxNmr);
-    const xTicks = [minStep, 25, 50, 75, 100, 125, 150, maxStep].filter((tick, index, ticks) => (
+    const xTickCandidates = isCompact
+        ? [minStep, 50, 100, 150, maxStep]
+        : [minStep, 25, 50, 75, 100, 125, 150, maxStep];
+    const xTicks = xTickCandidates.filter((tick, index, ticks) => (
         tick >= minStep && tick <= maxStep && ticks.indexOf(tick) === index
     ));
 
@@ -542,7 +579,7 @@ function renderNmrChart(container, points) {
     `).join('');
 
     const xLabels = xTicks.map(tick => `
-        <text x="${x(tick).toFixed(2)}" y="${height - 14}" text-anchor="middle">${tick}</text>
+        <text x="${x(tick).toFixed(2)}" y="${height - margin.bottom + 24}" text-anchor="middle">${tick}</text>
     `).join('');
 
     const seriesPaths = series.map(item => `
@@ -555,17 +592,24 @@ function renderNmrChart(container, points) {
     `).join('');
 
     const meanY = y(meanNmr).toFixed(2);
-    const legendX = width - margin.right + 20;
+    const legendY = isCompact ? height - 34 : height - 14;
     const legendItems = series.map((item, index) => {
-        const legendY = margin.top + 10 + index * 22;
+        const legendX = isCompact
+            ? margin.left + (index % 3) * 98
+            : margin.left + index * 124;
+        const itemLegendY = isCompact
+            ? legendY + Math.floor(index / 3) * 17
+            : legendY;
         return `
-            <line x1="${legendX}" y1="${legendY}" x2="${legendX + 28}" y2="${legendY}" stroke="${item.color}" stroke-width="${item.width}"></line>
-            <text x="${legendX + 38}" y="${legendY + 4}">${item.label}</text>
+            <line x1="${legendX}" y1="${itemLegendY}" x2="${legendX + 24}" y2="${itemLegendY}" stroke="${item.color}" stroke-width="${item.width}"></line>
+            <text x="${legendX + 32}" y="${itemLegendY + 4}">${item.label}</text>
         `;
     }).join('');
+    const meanLegendX = isCompact ? margin.left + 98 : margin.left + 496;
+    const meanLegendY = isCompact ? legendY + 17 : legendY;
 
     container.innerHTML = `
-        <svg viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="nmr-chart-title">
+        <svg class="${isCompact ? 'is-compact' : ''}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="nmr-chart-title">
             <title id="nmr-chart-title">NMR@10 over rollout steps by view</title>
             ${yGrid}
             <line class="axis-line" x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${height - margin.bottom}"></line>
@@ -575,11 +619,11 @@ function renderNmrChart(container, points) {
             ${xLabels}
             <g class="nmr-legend">
                 ${legendItems}
-                <line x1="${legendX}" y1="${margin.top + 98}" x2="${legendX + 28}" y2="${margin.top + 98}" class="nmr-mean-line"></line>
-                <text x="${legendX + 38}" y="${margin.top + 102}">mean=${meanNmr.toFixed(4)}</text>
+                <line x1="${meanLegendX}" y1="${meanLegendY}" x2="${meanLegendX + 24}" y2="${meanLegendY}" class="nmr-mean-line"></line>
+                <text x="${meanLegendX + 32}" y="${meanLegendY + 4}">mean=${meanNmr.toFixed(4)}</text>
             </g>
-            <text x="${margin.left + plotWidth / 2}" y="${height - 2}" text-anchor="middle">Step</text>
-            <text x="18" y="${margin.top + plotHeight / 2}" text-anchor="middle" transform="rotate(-90 18 ${margin.top + plotHeight / 2})">NMR@10</text>
+            <text class="axis-title" x="${margin.left + plotWidth / 2}" y="${height - (isCompact ? 48 : 36)}" text-anchor="middle">Step</text>
+            <text class="axis-title" x="${isCompact ? 14 : 18}" y="${margin.top + plotHeight / 2}" text-anchor="middle" transform="rotate(-90 ${isCompact ? 14 : 18} ${margin.top + plotHeight / 2})">NMR@10</text>
         </svg>
     `;
 }

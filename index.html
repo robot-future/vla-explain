@@ -71,7 +71,7 @@
   
   <!-- Critical CSS - Load synchronously -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=20260503-103">
+  <link rel="stylesheet" href="static/css/index.css?v=20260503-121">
   
   <!-- Non-critical CSS - Load asynchronously -->
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -86,7 +86,7 @@
   
   <!-- Defer non-critical JavaScript -->
   <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/index.js?v=20260503-7"></script>
+  <script defer src="static/js/index.js?v=20260503-18"></script>
   
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
@@ -285,10 +285,10 @@
             </div>
             <div class="teaser-trial-detail" id="teaser-trial-detail" aria-live="polite">
               <p class="teaser-trial-detail-panel teaser-trial-detail-fail">
-                Action decisions rely on <strong>nuisance visual cues</strong> (e.g., background, texture, and shadows).
+                <span>Action decisions rely on <strong>nuisance visual cues</strong> (e.g., background, texture, and shadows).</span>
               </p>
               <p class="teaser-trial-detail-panel teaser-trial-detail-success">
-                Action decisions rely on <strong>task-relevant cues</strong> (e.g., manipulator, end-effector, and cups).
+                <span>Action decisions rely on <strong>task-relevant cues</strong> (e.g., manipulator, end-effector, and cups).</span>
               </p>
             </div>
           </div>
@@ -306,7 +306,7 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
         <h2 class="title is-3">Key Highlights</h2>
-        <p class="highlights-subtitle">"Interventional attribution reveals the causal relationship between visual inputs and action outputs in VLA policies, and quantifying this causality enables prediction of out-of-distribution generalization."</p>
+        <p class="highlights-subtitle">"Interventional attribution reveals the causality between visual inputs and action outputs in VLA policies. Quantifying this causality enables prediction of out-of-distribution generalization."</p>
 
         <div class="highlights-grid">
           <div class="highlight-card">
@@ -446,15 +446,21 @@
         <div class="method-placeholder-grid" aria-label="Method detail placeholders">
           <article class="method-placeholder-card" data-method-trigger="iss">
             <h3>ISS</h3>
-            <div class="method-placeholder-body"></div>
+            <div class="method-placeholder-body">
+              <p>Generates heatmaps that identify visual regions affecting actions via perturbation.</p>
+            </div>
           </article>
           <article class="method-placeholder-card" data-method-trigger="iss-stream">
             <h3>ISS Stream</h3>
-            <div class="method-placeholder-body"></div>
+            <div class="method-placeholder-body">
+              <p>Generating temporal heatmaps via linear interpolation.</p>
+            </div>
           </article>
           <article class="method-placeholder-card" data-method-trigger="nmr">
             <h3>NMR@k</h3>
-            <div class="method-placeholder-body"></div>
+            <div class="method-placeholder-body">
+              <p>Quantifying nuisance-region reliance in top-k heatmaps.</p>
+            </div>
           </article>
         </div>
       </div>
