@@ -71,15 +71,13 @@
   
   <!-- Critical CSS - Load synchronously -->
   <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/index.css?v=20260503-103">
   
   <!-- Non-critical CSS - Load asynchronously -->
-  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   
   <!-- Fallback for browsers that don't support preload -->
   <noscript>
-    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   </noscript>
   
@@ -88,7 +86,7 @@
   
   <!-- Defer non-critical JavaScript -->
   <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/index.js"></script>
+  <script defer src="static/js/index.js?v=20260503-7"></script>
   
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
@@ -184,7 +182,10 @@
 
             <div class="is-size-6 publication-authors publication-affiliations">
               <span class="author-block"><sup>1</sup>DANiLab, University of Leicester &nbsp;&nbsp; <sup>2</sup>School of Computing and Mathematical Sciences, University of Leicester<br><sup>3</sup>School of Metallurgy and Materials, University of Birmingham</span>
-              <span class="venue-badge">Accepted at International Conference on Machine Learning (ICML) 2026</span>
+              <span class="venue-badge">
+                <span class="venue-badge-main">Accepted at International Conference on Machine Learning</span>
+                <span class="venue-badge-short">(ICML) 2026</span>
+              </span>
             </div>
 
             <div class="publication-logo-strip" aria-label="DANiLab and University of Leicester logos">
@@ -273,17 +274,22 @@
             </div>
           </div>
           <div class="teaser-caption">
+            <p class="teaser-index-instruction">Hover or tap a trial type</p>
             <div class="teaser-index">
               <div class="teaser-index-item teaser-index-fail">
-                <span class="teaser-index-hint">Hover or tap failed trials</span>
                 <span class="teaser-index-label">Failed Trials</span>
-                <span>Action decisions rely on <strong>nuisance visual cues</strong> (e.g., background, texture, and shadows)</span>
               </div>
               <div class="teaser-index-item teaser-index-success">
-                <span class="teaser-index-hint">Hover or tap successful trials</span>
                 <span class="teaser-index-label">Successful Trials</span>
-                <span>Action decisions rely on <strong>task-relevant cues</strong> (e.g., manipulator, end-effector, and cups)</span>
               </div>
+            </div>
+            <div class="teaser-trial-detail" id="teaser-trial-detail" aria-live="polite">
+              <p class="teaser-trial-detail-panel teaser-trial-detail-fail">
+                Action decisions rely on <strong>nuisance visual cues</strong> (e.g., background, texture, and shadows).
+              </p>
+              <p class="teaser-trial-detail-panel teaser-trial-detail-success">
+                Action decisions rely on <strong>task-relevant cues</strong> (e.g., manipulator, end-effector, and cups).
+              </p>
             </div>
           </div>
         </div>
@@ -305,28 +311,28 @@
         <div class="highlights-grid">
           <div class="highlight-card">
             <div class="highlight-header">
-              <span class="highlight-icon">👁️</span>
+              <span class="highlight-icon" aria-hidden="true"><i class="fas fa-eye"></i></span>
               <p class="highlight-title"><strong>Interpretable</strong></p>
             </div>
             <p class="highlight-desc">Enables post-hoc explanation of VLA trials by identifying which visual regions drive the policy's action decisions.</p>
           </div>
           <div class="highlight-card">
             <div class="highlight-header">
-              <span class="highlight-icon">📈</span>
+              <span class="highlight-icon" aria-hidden="true"><i class="fas fa-chart-line"></i></span>
               <p class="highlight-title"><strong>Predictive</strong></p>
             </div>
             <p class="highlight-desc">Predicts how well the VLA policy generalizes to OOD tasks by measuring its reliance on nuisance visual regions.</p>
           </div>
           <div class="highlight-card">
             <div class="highlight-header">
-              <span class="highlight-icon">⚖️</span>
+              <span class="highlight-icon" aria-hidden="true"><i class="fas fa-balance-scale"></i></span>
               <p class="highlight-title"><strong>Faithful</strong></p>
             </div>
             <p class="highlight-desc">Provides heatmaps that faithfully reflect the visual regions a VLA policy relies on for action prediction.</p>
           </div>
           <div class="highlight-card">
             <div class="highlight-header">
-              <span class="highlight-icon">🔌</span>
+              <span class="highlight-icon" aria-hidden="true"><i class="fas fa-plug"></i></span>
               <p class="highlight-title"><strong>Plug-and-Play</strong></p>
             </div>
             <p class="highlight-desc">Requires no changes to the VLA architecture or additional probes, intervening only on visual inputs.</p>
@@ -357,12 +363,12 @@
 <!-- End paper abstract -->
 
 <!-- Motivation -->
-<section class="section hero">
+<section class="section hero motivation-section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-full">
         <h2 class="title is-3">Motivation</h2>
-        <p class="motivation-question"><strong>How can we diagnose out-of-distribution generalization failures in VLA policies?</strong></p>
+        <p class="motivation-question">"How can we diagnose out-of-distribution generalization failures in VLA policies?"</p>
 
         <div class="motivation-video-grid">
 

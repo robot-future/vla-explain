@@ -77,6 +77,7 @@ function setupAbstractToggle() {
 }
 
 function setupTeaserHover() {
+    const caption = document.querySelector('.teaser-caption');
     const triggers = [
         { key: 'fail',    item: document.querySelector('.teaser-index-fail') },
         { key: 'success', item: document.querySelector('.teaser-index-success') }
@@ -90,6 +91,9 @@ function setupTeaserHover() {
             [overlay, video, item].filter(Boolean).forEach(el => el.classList.remove('active'));
             if (item) item.setAttribute('aria-pressed', 'false');
         });
+        if (!exceptKey && caption) {
+            caption.removeAttribute('data-active-trial');
+        }
     }
 
     triggers.forEach(function({ key, item }) {
@@ -101,22 +105,19 @@ function setupTeaserHover() {
         item.setAttribute('tabindex', '0');
         item.setAttribute('role', 'button');
         item.setAttribute('aria-pressed', 'false');
+        item.setAttribute('aria-controls', 'teaser-trial-detail');
 
         function activate() {
             clearActive(key);
             targets.forEach(el => el.classList.add('active'));
             item.setAttribute('aria-pressed', 'true');
-        }
-
-        function deactivate() {
-            targets.forEach(el => el.classList.remove('active'));
-            item.setAttribute('aria-pressed', 'false');
+            if (caption) {
+                caption.setAttribute('data-active-trial', key);
+            }
         }
 
         item.addEventListener('mouseenter', activate);
-        item.addEventListener('mouseleave', deactivate);
         item.addEventListener('focus', activate);
-        item.addEventListener('blur', deactivate);
         item.addEventListener('click', function(event) {
             event.stopPropagation();
             activate();
@@ -128,12 +129,14 @@ function setupTeaserHover() {
         });
     });
 
-    const defaultTrigger = triggers.find(({ key, item }) => key === 'fail' && item);
-    if (defaultTrigger) {
-        const overlay = document.getElementById('overlay-' + defaultTrigger.key);
-        const video   = document.getElementById('video-' + defaultTrigger.key);
-        [overlay, video, defaultTrigger.item].filter(Boolean).forEach(el => el.classList.add('active'));
-        defaultTrigger.item.setAttribute('aria-pressed', 'true');
+    if (caption) {
+        caption.addEventListener('mouseleave', function() {
+            clearActive();
+        });
+        caption.addEventListener('focusout', function(event) {
+            if (event.relatedTarget && caption.contains(event.relatedTarget)) return;
+            clearActive();
+        });
     }
 
     document.addEventListener('click', function() {
@@ -160,21 +163,27 @@ function setupTeaserHover() {
     canvas.height = window.innerHeight;
     window.addEventListener('resize', resize);
 
+    function getFireworkScale() {
+        const viewport = Math.min(window.innerWidth || 0, window.innerHeight || 0);
+        return Math.max(0.42, Math.min(1, viewport / 900));
+    }
+
     function spawnSideBurst(x, y, side) {
-        const count = 22;
+        const scale = getFireworkScale();
+        const count = Math.max(8, Math.round(22 * scale));
         const biasAngle = side === 'left' ? Math.PI : 0;
         for (let i = 0; i < count; i++) {
             const spread = (Math.random() - 0.5) * (Math.PI * 1.1);
             const angle = biasAngle + spread;
-            const speed = 3.5 + Math.random() * 5;
+            const speed = (3.5 + Math.random() * 5) * scale;
             particles.push({
                 x, y,
                 vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed + (Math.random() - 0.5) * 4,
+                vy: Math.sin(angle) * speed + (Math.random() - 0.5) * 4 * scale,
                 color: COLORS[Math.floor(Math.random() * COLORS.length)],
                 alpha: 1,
-                radius: 2.5 + Math.random() * 3,
-                gravity: 0.10,
+                radius: (2.5 + Math.random() * 3) * scale,
+                gravity: 0.10 * scale,
                 decay: 0.014 + Math.random() * 0.01
             });
         }
@@ -210,8 +219,8 @@ function setupTeaserHover() {
     function triggerFireworks(badge) {
         const rect = badge.getBoundingClientRect();
         const cy = rect.top + rect.height / 2;
-        spawnSideBurst(rect.left, cy, 'left');
-        setTimeout(() => spawnSideBurst(rect.right, cy, 'right'), 120 + Math.random() * 100);
+        spawnSideBurst(rect.left + rect.width * 0.25, cy, 'left');
+        setTimeout(() => spawnSideBurst(rect.left + rect.width * 0.75, cy, 'right'), 120 + Math.random() * 100);
         if (!animFrame) animFrame = requestAnimationFrame(animate);
     }
 
@@ -287,6 +296,8 @@ function setupTeaserLayoutScale() {
         layout.style.transform = 'none';
         shell.style.width = '';
         shell.style.height = '';
+        shell.style.removeProperty('--teaser-layout-scale');
+        shell.style.removeProperty('--teaser-inverse-scale');
         shell.classList.remove('is-stacked');
 
         const parent = shell.parentElement;
@@ -313,8 +324,11 @@ function setupTeaserLayoutScale() {
         shell.style.width = `${baseWidth * scale}px`;
         layout.style.transform = `scale(${scale})`;
         shell.style.height = `${layout.offsetHeight * scale}px`;
+        shell.style.setProperty('--teaser-layout-scale', String(scale));
+        shell.style.setProperty('--teaser-inverse-scale', String(1 / scale));
     }
 
+    window._updateTeaserLayoutScale = updateScale;
     updateScale();
     window.addEventListener('resize', updateScale);
     window.addEventListener('load', updateScale);
