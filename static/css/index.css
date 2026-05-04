@@ -924,12 +924,24 @@ main > section.section:nth-of-type(even) {
 
 .publication-affiliations {
   font-size: 0.875rem !important;
+  color: #6B665E;
+  font-weight: 500;
+}
+
+.publication-author-list .author-name,
+.publication-author-list sup,
+.publication-author-list .author-separator {
+  color: #2A2A2A;
+}
+
+.publication-author-list .author-name {
+  font-weight: 650;
 }
 
 .publication-authors a {
-   color: var(--nature-teal) !important;
+   color: #2A2A2A !important;
    text-decoration: none;
-   font-weight: 600;
+   font-weight: 650;
    transition: var(--transition);
    position: relative;
 }
@@ -950,7 +962,7 @@ main > section.section:nth-of-type(even) {
 }
 
 .publication-authors a:hover {
-    color: var(--nature-teal-dark) !important;
+    color: #111111 !important;
 }
 
 .author-block {
@@ -2631,8 +2643,12 @@ code {
 
   .paper-hero .publication-author-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.42rem 0.38rem;
+    grid-template-columns: repeat(3, max-content);
+    justify-content: space-evenly;
+    justify-items: center;
+    column-gap: 0;
+    row-gap: 0.42rem;
+    width: min(100%, 36rem);
     max-width: 36rem;
     font-size: clamp(0.78rem, 2.7vw, 0.98rem) !important;
     margin: 0 auto 1.2rem;
@@ -2710,7 +2726,9 @@ code {
   }
 
   .paper-hero .publication-author-list {
-    gap: 0.36rem 0.18rem;
+    row-gap: 0.36rem;
+    column-gap: 0;
+    width: calc(100vw - 2.25rem);
     max-width: calc(100vw - 2.25rem);
     font-size: clamp(0.68rem, 2.85vw, 0.84rem) !important;
   }
