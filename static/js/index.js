@@ -537,85 +537,44 @@ function setupDemoVideoSync() {
     const demo = document.getElementById('close-jar-demo');
     if (!demo) return;
 
-    const videos = Array.from(demo.querySelectorAll('video.demo-sync-video'));
-    if (videos.length < 2) return;
+    const gifs = Array.from(demo.querySelectorAll('img.demo-sync-video'));
+    if (gifs.length < 2) return;
 
-    let cycle = 0;
-    let active = false;
-    let starting = false;
-    let endedCount = 0;
+    const blankGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+    let restartFrame = null;
 
-    function waitForReady(video) {
-        if (video.readyState >= 1) return Promise.resolve();
-        return new Promise(resolve => {
-            video.addEventListener('loadedmetadata', resolve, { once: true });
-            video.load();
-        });
-    }
-
-    videos.forEach(video => {
-        video.muted = true;
-        video.playsInline = true;
-        video.preload = 'auto';
-        video.loop = false;
-        video.addEventListener('ended', function() {
-            if (!active || starting) return;
-            endedCount += 1;
-            if (endedCount === videos.length) {
-                restartAll();
-            }
-        });
+    gifs.forEach(image => {
+        image.dataset.syncSrc = image.getAttribute('src') || '';
+        const preload = new Image();
+        preload.src = image.dataset.syncSrc;
     });
 
     function restartAll() {
-        if (!active || starting) return;
+        if (restartFrame) cancelAnimationFrame(restartFrame);
 
-        starting = true;
-        endedCount = 0;
-        cycle += 1;
-        const currentCycle = cycle;
+        gifs.forEach(image => {
+            image.src = blankGif;
+        });
 
-        Promise.all(videos.map(waitForReady)).then(function() {
-            if (!active || currentCycle !== cycle) return;
-
-            videos.forEach(video => {
-                video.pause();
-                video.currentTime = 0;
-            });
-
-            requestAnimationFrame(function() {
-                if (!active || currentCycle !== cycle) return;
-
-                videos.forEach(video => {
-                    video.play().catch(() => {});
-                });
-                starting = false;
+        restartFrame = requestAnimationFrame(function() {
+            restartFrame = null;
+            gifs.forEach(image => {
+                image.src = image.dataset.syncSrc;
             });
         });
-    }
-
-    function pauseAll() {
-        active = false;
-        cycle += 1;
-        starting = false;
-        videos.forEach(video => video.pause());
     }
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                active = true;
                 restartAll();
-            } else {
-                pauseAll();
             }
         });
     }, { threshold: 0.2 });
 
     observer.observe(demo);
-    window.addEventListener('load', function() {
-        if (active) restartAll();
-    });
+    window.addEventListener('load', restartAll);
+    restartAll();
 }
 
 function setupNmrChart() {
