@@ -1649,7 +1649,34 @@ main > section.section:nth-of-type(even) {
 }
 
 @media screen and (min-width: 769px) {
+  .demo-top-grid {
+    align-items: stretch;
+  }
+
+  .demo-attribution-block {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
+  }
+
+  .demo-attribution-block .demo-method-grid {
+    flex: 1;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+  }
+
+  .demo-attribution-block .demo-method-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .demo-attribution-block .demo-method-card h4 {
+    margin-bottom: 0.34rem;
+    font-size: 1.08rem;
+  }
+
   .demo-attribution-block .demo-heatmap-grid {
+    flex: 1;
+    align-items: center;
     width: 98.5%;
     margin: 0 auto;
     gap: 0.85rem;
@@ -1659,9 +1686,6 @@ main > section.section:nth-of-type(even) {
     margin-bottom: 0.65rem;
   }
 
-  .demo-attribution-block {
-    padding-bottom: 0.75rem;
-  }
 }
 
 @media screen and (min-width: 769px) and (max-width: 960px) {

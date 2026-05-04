@@ -479,7 +479,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupExperimentTriggers();
     setupDemoVideoSync();
     setupNmrChart();
-    setupDemoTopHeightBalance();
 });
 
 function setupMotivationVideoAutoplay() {
@@ -538,104 +537,85 @@ function setupDemoVideoSync() {
     const demo = document.getElementById('close-jar-demo');
     if (!demo) return;
 
-    const gifs = Array.from(demo.querySelectorAll('img.demo-sync-video'));
     const videos = Array.from(demo.querySelectorAll('video.demo-sync-video'));
-    if (gifs.length + videos.length < 2) return;
+    if (videos.length < 2) return;
 
-    const blankGif = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
-    const overviewVideo = demo.querySelector('video.demo-overview-video');
+    let cycle = 0;
+    let active = false;
+    let starting = false;
+    let endedCount = 0;
 
-    let restarting = false;
-
-    function resetVideos() {
-        videos.forEach(video => {
-            video.loop = false;
-            video.pause();
-            if (Number.isFinite(video.duration)) {
-                video.currentTime = 0;
-            }
+    function waitForReady(video) {
+        if (video.readyState >= 1) return Promise.resolve();
+        return new Promise(resolve => {
+            video.addEventListener('loadedmetadata', resolve, { once: true });
+            video.load();
         });
     }
-
-    function playVideos() {
-        videos.forEach(video => video.play().catch(() => {}));
-    }
-
-    function resetGifs() {
-        gifs.forEach(image => {
-            if (!image.dataset.syncSrc) {
-                image.dataset.syncSrc = image.getAttribute('src') || '';
-            }
-        });
-
-        gifs.forEach(image => {
-            const preload = new Image();
-            preload.src = image.dataset.syncSrc;
-        });
-
-        gifs.forEach(image => {
-            image.src = blankGif;
-        });
-    }
-
-    function restoreGifs() {
-        gifs.forEach(image => {
-            image.src = image.dataset.syncSrc;
-        });
-    }
-
-    function restartAll() {
-        if (restarting) return;
-        restarting = true;
-        resetVideos();
-        resetGifs();
-        requestAnimationFrame(function() {
-            restoreGifs();
-            playVideos();
-            restarting = false;
-        });
-    }
-
-    gifs.forEach(image => {
-        image.dataset.syncSrc = image.getAttribute('src') || '';
-    });
 
     videos.forEach(video => {
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = 'auto';
         video.loop = false;
-        if (video !== overviewVideo) {
-            video.addEventListener('ended', function() {
-                video.pause();
-            });
-        }
+        video.addEventListener('ended', function() {
+            if (!active || starting) return;
+            endedCount += 1;
+            if (endedCount === videos.length) {
+                restartAll();
+            }
+        });
     });
 
-    if (overviewVideo) {
-        overviewVideo.addEventListener('ended', restartAll);
-        overviewVideo.addEventListener('pause', function() {
+    function restartAll() {
+        if (!active || starting) return;
+
+        starting = true;
+        endedCount = 0;
+        cycle += 1;
+        const currentCycle = cycle;
+
+        Promise.all(videos.map(waitForReady)).then(function() {
+            if (!active || currentCycle !== cycle) return;
+
             videos.forEach(video => {
-                if (video !== overviewVideo) video.pause();
+                video.pause();
+                video.currentTime = 0;
             });
-        });
-        overviewVideo.addEventListener('play', function() {
-            videos.forEach(video => {
-                if (video !== overviewVideo && !video.ended) {
+
+            requestAnimationFrame(function() {
+                if (!active || currentCycle !== cycle) return;
+
+                videos.forEach(video => {
                     video.play().catch(() => {});
-                }
+                });
+                starting = false;
             });
         });
+    }
+
+    function pauseAll() {
+        active = false;
+        cycle += 1;
+        starting = false;
+        videos.forEach(video => video.pause());
     }
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                active = true;
                 restartAll();
+            } else {
+                pauseAll();
             }
         });
     }, { threshold: 0.2 });
 
     observer.observe(demo);
-    window.addEventListener('load', restartAll);
-    restartAll();
+    window.addEventListener('load', function() {
+        if (active) restartAll();
+    });
 }
 
 function setupNmrChart() {
