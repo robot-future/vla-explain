@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iss-nmr-toolkit"
+version = "0.1.0"
+description = "Offline ISS and NMR toolkit for Pi05 VLA episodes"
+requires-python = ">=3.8"
+dependencies = [
+  "numpy",
+  "opencv-python",
+  "tqdm",
+  "matplotlib",
+  "hydra-core",
+]
+
+[project.optional-dependencies]
+pi05 = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["configs*", "iss_nmr_toolkit*"]
+
+[tool.setuptools.package-data]
+configs = ["*.yaml"]
+
+[tool.setuptools]
+py-modules = [
+  "compute_nmr_k",
+  "gen_iss_heatmap",
+  "vis_iss_nmr_k",
+]
+
+[project.scripts]
+gen-iss-heatmap = "gen_iss_heatmap:main"
+compute-nmr-k = "compute_nmr_k:main"
+vis-iss-nmr-k = "vis_iss_nmr_k:main"

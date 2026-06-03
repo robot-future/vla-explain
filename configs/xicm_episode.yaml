@@ -1,0 +1,50 @@
+# One-shot ISS + NMR configuration for one prepared X-ICM task episode.
+
+defaults:
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+  - _self_
+
+data:
+  root: data/xicm_demo
+  task: close_jar
+  episode: episode0
+  episode_dir: null
+  prompt: null
+  require_state: true
+
+policy:
+  checkpoint_dir: ???
+  config_name: pi05_xicm
+  cuda_visible_devices: ${oc.env:CUDA_VISIBLE_DEVICES,0}
+
+output:
+  dir: outputs/${data.task}/${data.episode}
+
+iss:
+  batch_size: 64
+  n_masks: 500
+  p_keep: 0.3
+  grid_size: [7, 7]
+  blur_sigma: 10.0
+  time_stride: 10
+  seed: 0
+
+nmr:
+  k_percent: 10.0
+  k_pixels: 0
+  normalize: joint
+
+viz:
+  fps: 15
+  alpha: 0.6
+  snapshot_steps: null
+  top_k_percent: null
+  skip_video: false
+
+hydra:
+  output_subdir: null
+  job:
+    chdir: false
+  run:
+    dir: .
