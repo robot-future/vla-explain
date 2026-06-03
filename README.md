@@ -25,9 +25,9 @@ Example project pages built using this template are:
 To start using the template click on `Use this Template`.
 
 The template uses html for controlling the content and css for controlling the style.
-To edit the website contents edit the `doc/index.html` file. It contains different HTML "building blocks", use whichever ones you need and comment out the rest.
+To edit the website contents edit the `docs/index.html` file. It contains different HTML "building blocks", use whichever ones you need and comment out the rest.
 
-**IMPORTANT!** Make sure to replace the `favicon.ico` under `doc/static/images/` with one of your own, otherwise your favicon is going to be a dreambooth image of me.
+**IMPORTANT!** Make sure to replace the `favicon.ico` under `docs/static/images/` with one of your own, otherwise your favicon is going to be a dreambooth image of me.
 
 ## What's New
 
@@ -64,13 +64,13 @@ The template includes meta tags for better search engine visibility and social m
 - Social media previews (Twitter, Facebook, LinkedIn)
 - Search engine optimization
 
-Create a 1200x630px social preview image at `doc/static/images/social_preview.png`.
+Create a 1200x630px social preview image at `docs/static/images/social_preview.png`.
 
 ## Tips
 
 - Compress images with [TinyPNG](https://tinypng.com)
 - Use YouTube for large videos (>10MB)  
-- Replace the favicon in `doc/static/images/`
+- Replace the favicon in `docs/static/images/`
 - Works with GitHub Pages
 
 ## Acknowledgments

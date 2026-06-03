@@ -2,7 +2,7 @@
 
 ## Color System (Nature Journal Style)
 
-### CSS Variables (defined in `doc/static/css/index.css` `:root`)
+### CSS Variables (defined in `docs/static/css/index.css` `:root`)
 
 ```
 /* Brand accent colors */
@@ -119,4 +119,4 @@
 
 ---
 
-*Style files: `doc/static/css/index.css` (custom), `doc/static/css/bulma.min.css` (framework)*
+*Style files: `docs/static/css/index.css` (custom), `docs/static/css/bulma.min.css` (framework)*
