@@ -469,7 +469,31 @@ function setupTeaserLayoutScale() {
     }
 }
 
+function setupLinksOpenInNewWindows() {
+    document.querySelectorAll('a[href]').forEach(function(link) {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const normalizedHref = href.trim().toLowerCase();
+        if (
+            normalizedHref.startsWith('#') ||
+            normalizedHref.startsWith('mailto:') ||
+            normalizedHref.startsWith('tel:') ||
+            normalizedHref.startsWith('javascript:')
+        ) {
+            return;
+        }
+
+        link.setAttribute('target', '_blank');
+
+        const rel = new Set((link.getAttribute('rel') || '').split(/\s+/).filter(Boolean));
+        rel.add('noopener');
+        rel.add('noreferrer');
+        link.setAttribute('rel', Array.from(rel).join(' '));
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    setupLinksOpenInNewWindows();
     setupMotivationVideoAutoplay();
     setupAbstractToggle();
     setupTeaserHover();
