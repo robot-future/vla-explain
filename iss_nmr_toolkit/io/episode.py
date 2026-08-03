@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import glob
+import inspect
 import os
 import re
 from pathlib import Path
@@ -134,6 +135,78 @@ def load_episode_directory(
         obs["prompt"] = prompt
         observations.append(obs)
 
+    return observations
+
+
+def _to_numpy(value: Any) -> np.ndarray:
+    if hasattr(value, "detach"):
+        value = value.detach().cpu().numpy()
+    return np.asarray(value)
+
+
+def load_lerobot_episode(
+    dataset_root: str | os.PathLike[str],
+    *,
+    repo_id: str,
+    episode_index: int,
+    views: dict[str, str],
+    prompt: str | None = None,
+    require_state: bool = True,
+    state_key: str = "observation.state",
+) -> list[dict[str, Any]]:
+    """Load one episode directly through :class:`LeRobotDataset`.
+
+    Images are returned as uint8 HWC RGB arrays so the ISS masking and
+    visualization code use the same pixels. The policy adapter converts them
+    back to the tensor layout expected by the trained LeRobot policy.
+    """
+    try:
+        from lerobot.datasets.lerobot_dataset import LeRobotDataset
+    except ModuleNotFoundError as exc:
+        raise ModuleNotFoundError(
+            "LeRobot is required for data.source=lerobot. Activate the same "
+            "environment used to train/deploy the pi05 policy."
+        ) from exc
+
+    root = Path(dataset_root).expanduser().resolve()
+    if not (root / "meta" / "info.json").is_file():
+        raise FileNotFoundError(f"LeRobot meta/info.json not found under: {root}")
+
+    init_params = inspect.signature(LeRobotDataset.__init__).parameters
+    kwargs: dict[str, Any] = {"repo_id": repo_id, "root": root}
+    supports_episode_filter = "episodes" in init_params
+    if supports_episode_filter:
+        kwargs["episodes"] = [int(episode_index)]
+    if "return_uint8" in init_params:
+        kwargs["return_uint8"] = True
+    dataset = LeRobotDataset(**kwargs)
+
+    observations: list[dict[str, Any]] = []
+    for index in tqdm(range(len(dataset)), desc=f"Loading LeRobot episode {episode_index}"):
+        sample = dataset[index]
+        sample_episode = int(_to_numpy(sample["episode_index"]).item())
+        if not supports_episode_filter and sample_episode != int(episode_index):
+            continue
+
+        obs: dict[str, Any] = {}
+        for view, obs_key in views.items():
+            if obs_key not in sample:
+                raise KeyError(
+                    f"Dataset frame is missing camera key {obs_key!r} for view {view!r}."
+                )
+            obs[obs_key] = parse_image(_to_numpy(sample[obs_key]))
+
+        if state_key in sample:
+            obs[state_key] = _to_numpy(sample[state_key]).astype(np.float32, copy=False)
+        elif require_state:
+            raise KeyError(f"Dataset frame is missing required state key: {state_key}")
+
+        sample_prompt = sample.get("task")
+        obs["task"] = prompt if prompt is not None else str(sample_prompt or "")
+        observations.append(obs)
+
+    if not observations:
+        raise ValueError(f"Episode {episode_index} has no frames in {root}")
     return observations
 
 def load_masks(

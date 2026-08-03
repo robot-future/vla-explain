@@ -8,6 +8,9 @@ from typing import Any
 
 import numpy as np
 from omegaconf import DictConfig
+from omegaconf import OmegaConf
+
+from iss_nmr_toolkit.constants import DEFAULT_VIEWS
 
 
 def quiet_third_party_logs() -> None:
@@ -36,6 +39,16 @@ def resolve_prompt(cfg: DictConfig) -> str | None:
     if cfg.data.prompt is not None:
         return str(cfg.data.prompt)
     return None
+
+
+def resolve_views(cfg: DictConfig) -> dict[str, str]:
+    configured = cfg.data.get("views")
+    if configured is None:
+        return dict(DEFAULT_VIEWS)
+    return {
+        str(key): str(value)
+        for key, value in OmegaConf.to_container(configured, resolve=True).items()
+    }
 
 
 def output_dir(cfg: DictConfig) -> Path:

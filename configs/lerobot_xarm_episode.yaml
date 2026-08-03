@@ -1,0 +1,55 @@
+# Direct ISS generation for the local dual-arm XArm LeRobot v3 dataset.
+
+defaults:
+  - override hydra/job_logging: disabled
+  - override hydra/hydra_logging: disabled
+  - _self_
+
+data:
+  source: lerobot
+  root: 'C:\Users\26220\Desktop\Reconova\bag1_pickup_am629_cleaned'
+  repo_id: local/bag1_pickup_am629_cleaned
+  episode_index: 0
+  prompt: 'Grab the two straps of the blue backpack and lift it up.'
+  require_state: true
+  state_key: observation.state
+  views:
+    chest: observation.images.cam_chest
+    wrist_left: observation.images.cam_wrist_left
+    wrist_right: observation.images.cam_wrist_right
+
+policy:
+  backend: lerobot
+  checkpoint_dir: ???
+  device: cuda
+  use_half: false
+  seed: 0
+  deterministic: true
+
+output:
+  dir: outputs/bag1_pickup/episode_${data.episode_index}
+
+iss:
+  # The paper uses N=100 and p=0.3. Start with 20 for a quick pipeline check,
+  # then override iss.n_masks=100 for the final maps.
+  batch_size: 4
+  n_masks: 20
+  p_keep: 0.3
+  grid_size: [7, 7]
+  blur_sigma: 10.0
+  time_stride: 10
+  seed: 0
+
+viz:
+  render_after_iss: true
+  fps: 30
+  alpha: 0.6
+  top_k_percent: 10.0
+  skip_video: false
+
+hydra:
+  output_subdir: null
+  job:
+    chdir: false
+  run:
+    dir: .
